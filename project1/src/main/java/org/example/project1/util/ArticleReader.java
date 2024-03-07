@@ -23,16 +23,16 @@ public class ArticleReader {
             "&#3;"};
 
     public List<Article> readArticles() throws IOException {
-        try{
+        try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 if (line.contains("<REUTERS")) {
                     buffer = new StringBuilder();
                 }
                 buffer.append(line).append("\n");
 
-                if(line.contains("</REUTERS>")) {
+                if (line.contains("</REUTERS>")) {
                     String title = extractTagContent(buffer.toString(), "TITLE");
                     String text = extractTagContent(buffer.toString(), "BODY");
                     String topics = extractTagContent(buffer.toString(), "TOPICS");
@@ -45,8 +45,7 @@ public class ArticleReader {
                 }
             }
             return articles;
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             throw new IOException("Cannot read this file");
         }
     }
@@ -59,8 +58,7 @@ public class ArticleReader {
 
         if (startIndex != -1 && endIndex != -1) {
             String tmp = articleContent.substring(startIndex + startTag.length(), endIndex).trim();
-            for (int i = 0; i < META_CHARS_SERIALIZATIONS.length; i++)
-            {
+            for (int i = 0; i < META_CHARS_SERIALIZATIONS.length; i++) {
                 tmp = tmp.replaceAll(META_CHARS_SERIALIZATIONS[i], META_CHARS[i]).trim();
             }
             return tmp;
@@ -69,7 +67,7 @@ public class ArticleReader {
         }
     }
 
-    private static List<String> extractElementsWithTheSameTag (String line){
+    private static List<String> extractElementsWithTheSameTag(String line) {
         List<String> elements = new ArrayList<>();
         int startIndex = line.indexOf("<D>");
         int endIndex;
@@ -80,8 +78,7 @@ public class ArticleReader {
                 String element = line.substring(startIndex + 3, endIndex);
                 elements.add(element);
                 startIndex = line.indexOf("<D>", endIndex);
-            }
-            else {
+            } else {
                 break;
             }
         }
