@@ -44,6 +44,7 @@ public class ArticleReader {
                     articles.add(article);
                 }
             }
+            reader.close();
             return articles;
         } catch (IOException e) {
             throw new IOException("Cannot read this file");
@@ -57,7 +58,7 @@ public class ArticleReader {
         int endIndex = articleContent.indexOf(endTag);
 
         if (startIndex != -1 && endIndex != -1) {
-            String tmp = articleContent.substring(startIndex + startTag.length(), endIndex).trim();
+            String tmp = articleContent.substring(startIndex + startTag.length(), endIndex);
             for (int i = 0; i < META_CHARS_SERIALIZATIONS.length; i++) {
                 tmp = tmp.replaceAll(META_CHARS_SERIALIZATIONS[i], META_CHARS[i]).trim();
             }
