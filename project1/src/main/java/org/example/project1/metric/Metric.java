@@ -1,4 +1,4 @@
-package org.example.project1.metrics;
+package org.example.project1.metric;
 
 import java.util.List;
 

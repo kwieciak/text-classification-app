@@ -1,4 +1,6 @@
-package org.example.project1.metrics;
+package org.example.project1.metric.metrics;
+
+import org.example.project1.metric.Metric;
 
 import java.util.List;
 

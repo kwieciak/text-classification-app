@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a983de5-4b52-42c8-af05-9427f651013c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/project1/metric/MetricFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/project1/metric/MetricType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/project1/metric/metrics/WeightedMetric.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/project1/util/Article.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/project1/util/Article.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/project1/metrics/ChebyshevMetric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/project1/metric/metrics/ChebyshevMetric.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/project1/metrics/EuclideanMetric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/project1/metric/metrics/EuclideanMetric.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/project1/metrics/ManhattanMetric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/project1/metric/metrics/ManhattanMetric.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/project1/metrics/Metric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/project1/metric/Metric.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +24,7 @@
       <list>
         <option value="JavaFXApplication" />
         <option value="Interface" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -50,7 +56,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
+    "settings.editor.selected.configurable": "Lombok",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -72,7 +78,7 @@
       <workItem from="1709591389917" duration="1000" />
       <workItem from="1709741055998" duration="165000" />
       <workItem from="1709741234625" duration="5369000" />
-      <workItem from="1712171938288" duration="2070000" />
+      <workItem from="1712171938288" duration="4380000" />
     </task>
     <servers />
   </component>
