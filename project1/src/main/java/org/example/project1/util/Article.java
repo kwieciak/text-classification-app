@@ -2,7 +2,6 @@ package org.example.project1.util;
 
 import java.util.List;
 
-
 public class Article {
     private List<String> placesList;
     private List<String> topics;
