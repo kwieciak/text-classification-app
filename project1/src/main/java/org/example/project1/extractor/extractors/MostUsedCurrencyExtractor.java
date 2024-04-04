@@ -1,4 +1,11 @@
 package org.example.project1.extractor.extractors;
 
-public class MostUsedCurrencyExtractor {
+import org.example.project1.extractor.Extractor;
+
+public class MostUsedCurrencyExtractor implements Extractor<String> {
+    @Override
+    public String extract(String article) {
+        return null;
+    }
+
 }

@@ -2,9 +2,9 @@ package org.example.project1.extractor.extractors;
 
 import org.example.project1.extractor.Extractor;
 
-public class MostUsedContinentExtractor implements Extractor<String> {
+public class WordsDependenciesExtractor implements Extractor<Double> {
     @Override
-    public String extract(String article) {
+    public Double extract(String article) {
         return null;
     }
 }

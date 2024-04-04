@@ -1,4 +1,10 @@
 package org.example.project1.extractor.extractors;
 
-public class MostUsedSeExtractor {
+import org.example.project1.extractor.Extractor;
+
+public class MostUsedSeExtractor implements Extractor<String> {
+    @Override
+    public String extract(String article) {
+        return null;
+    }
 }
