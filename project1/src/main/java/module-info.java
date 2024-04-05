@@ -7,6 +7,7 @@ module org.example.project1 {
     requires java.xml;
     requires org.apache.commons.io;
     requires com.opencsv;
+    requires static lombok;
 
     opens org.example.project1 to javafx.fxml;
     exports org.example.project1;
