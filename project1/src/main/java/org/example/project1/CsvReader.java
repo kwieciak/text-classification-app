@@ -13,7 +13,7 @@ public class CsvReader {
     public CsvReader() {
     }
 
-    public Map<String, List<String>> readCsv(String path) {
+    public static Map<String, List<String>> readCsv(String path) {
         Map<String, List<String>> records = new LinkedHashMap<>();
         try (CSVReader csvReader = new CSVReaderBuilder(new FileReader(path))
                 .withCSVParser(new CSVParserBuilder()
@@ -42,7 +42,7 @@ public class CsvReader {
         return sortMap(records);
     }
 
-    private Map<String, List<String>> sortMap(Map<String, List<String>> map) {
+    private static Map<String, List<String>> sortMap(Map<String, List<String>> map) {
         List<Map.Entry<String, List<String>>> entryList = new ArrayList<>(map.entrySet());
         entryList.sort(Comparator.comparingInt(e -> e.getValue().size()));
         Map<String, List<String>> sortedMap = new LinkedHashMap<>();
