@@ -6,6 +6,7 @@ module org.example.project1 {
     requires org.kordamp.bootstrapfx.core;
     requires java.xml;
     requires org.apache.commons.io;
+    requires com.opencsv;
     requires static lombok;
 
     opens org.example.project1 to javafx.fxml;
