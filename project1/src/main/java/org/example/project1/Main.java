@@ -2,8 +2,8 @@ package org.example.project1;
 
 import org.example.project1.extractor.Extractor;
 import org.example.project1.extractor.extractors.*;
-import org.example.project1.article.Article;
-import org.example.project1.article.ArticleReader;
+import org.example.project1.util.Article;
+import org.example.project1.util.ArticleReader;
 
 import java.io.IOException;
 import java.util.List;

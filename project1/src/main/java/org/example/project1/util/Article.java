@@ -1,4 +1,4 @@
-package org.example.project1.article;
+package org.example.project1.util;
 
 import java.util.List;
 
