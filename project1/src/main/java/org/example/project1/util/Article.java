@@ -1,35 +1,29 @@
 package org.example.project1.util;
 
+import lombok.Getter;
+
 import java.util.List;
 
 
 public class Article {
-    private List<String> placesList;
+    @Getter
+    private List<String> countriesList;
+    @Getter
     private List<String> topics;
+    @Getter
     private String title;
+    @Getter
     private String text;
 
-    public Article(List<String> placesList, List<String> topics, String title, String text) {
-        this.placesList = placesList;
+    public Article(List<String> countriesList, String country, List<String> topics, String title, String text) {
+        this.countriesList = countriesList;
         this.topics = topics;
         this.title = title;
         this.text = text;
     }
 
-    public List<String> getPlacesList() {
-        return placesList;
-    }
-
-    public List<String> getTopics() {
-        return topics;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getText() {
-        return text;
+    public String getCountry() {
+        return countriesList.get(0);
     }
 }
 
