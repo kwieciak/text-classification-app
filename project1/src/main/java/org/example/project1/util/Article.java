@@ -1,13 +1,21 @@
 package org.example.project1.util;
 
+import lombok.Getter;
+
 import java.util.List;
 
 
 public class Article {
+    @Getter
     private List<String> placesList;
+    @Getter
     private List<String> topics;
+    @Getter
     private String title;
+    @Getter
     private String text;
+    @Getter
+    private List<Object> featuresVector;
 
     public Article(List<String> placesList, List<String> topics, String title, String text) {
         this.placesList = placesList;
@@ -16,20 +24,9 @@ public class Article {
         this.text = text;
     }
 
-    public List<String> getPlacesList() {
-        return placesList;
-    }
 
-    public List<String> getTopics() {
-        return topics;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getText() {
-        return text;
+    public void setFeaturesVector(List<Object> featuresVector) {
+        this.featuresVector = featuresVector;
     }
 }
 
