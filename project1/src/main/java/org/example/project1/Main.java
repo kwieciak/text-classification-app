@@ -23,7 +23,7 @@ public class Main {
         //Double d = (Double) extractor.extract(articles.get(1));
         //System.out.println(d);
         GeneralizedNgramMeasure generalizedNgramMeasure = new GeneralizedNgramMeasure();
-        double v = generalizedNgramMeasure.CalculateMeasure("programmer", "programming");
+        double v = generalizedNgramMeasure.CalculateMetric("programmer", "programming");
         System.out.println(v);
     }
 }
