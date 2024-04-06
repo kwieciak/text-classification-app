@@ -1,5 +1,6 @@
 package org.example.project1;
 
+import org.example.project1.extractor.ExtractorType;
 import org.example.project1.util.Article;
 import org.example.project1.metric.Metric;
 
@@ -18,8 +19,22 @@ public class Knn {
         this.testingArticles = testingArticles;
     }
 
-    public List<String> classifyArticles() {
-        return null;
+    public void assignFeatureVectors() {
+        for (Article article : trainingArticles) {
+            List<Object> featureVector = new ArrayList<>();
+            for (ExtractorType extractorType : ExtractorType.values()) {
+                featureVector.add(extractorType.getExtractor().extract(article));
+            }
+            article.setFeaturesVector(featureVector);
+        }
+
+        for (Article article : testingArticles) {
+            List<Object> featureVector = new ArrayList<>();
+            for (ExtractorType extractorType : ExtractorType.values()) {
+                featureVector.add(extractorType.getExtractor().extract(article));
+            }
+            article.setFeaturesVector(featureVector);
+        }
     }
 
 

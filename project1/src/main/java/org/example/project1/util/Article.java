@@ -15,18 +15,18 @@ public class Article {
     @Getter
     private String text;
     @Getter
-//    private List<Object> featuresVector;
+    private List<Object> featuresVector;
 
-    public Article(List<String> countriesList, List<String> topics, String title, String text) {
-        this.placesList = countriesList;
+    public Article(List<String> placesList, List<String> topics, String title, String text) {
+        this.placesList = placesList;
         this.topics = topics;
         this.title = title;
         this.text = text;
     }
 
 
-//    public void setFeaturesVector(List<Object> featuresVector) {
-//        this.featuresVector = featuresVector;
-//    }
+    public void setFeaturesVector(List<Object> featuresVector) {
+        this.featuresVector = featuresVector;
+    }
 }
 
