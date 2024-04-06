@@ -1,11 +1,14 @@
 package org.example.project1;
 
 import org.example.project1.extractor.Extractor;
+import org.example.project1.extractor.ExtractorFactory;
+import org.example.project1.extractor.ExtractorType;
 import org.example.project1.extractor.extractors.*;
 import org.example.project1.util.Article;
 import org.example.project1.util.ArticleReader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {

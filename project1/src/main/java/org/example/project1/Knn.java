@@ -19,25 +19,7 @@ public class Knn {
     }
 
     public List<String> classifyArticles() {
-        List<String> predictedCountries = new ArrayList<>();
-        for (Article testArticle : testingArticles) {
-            Map<Double, String> distanceToCountry = new HashMap<>();
-            for (Article trainArticle : trainingArticles) {
-                double distance = metric.calculateDistance(testArticle, trainArticle);
-                distanceToCountry.put(distance, trainArticle.getCountry());
-            }
-            List<Double> sortedDistances = new ArrayList<>(distanceToCountry.keySet());
-            Collections.sort(sortedDistances);
-            Map<String, Integer> countryVotes = new HashMap<>();
-            for (int i = 0; i < k; i++) {
-                String country = distanceToCountry.get(sortedDistances.get(i));
-                countryVotes.put(country, countryVotes.getOrDefault(country, 0) + 1);
-            }
-            String predictedCountry = Collections.max(countryVotes.entrySet(), Map.Entry.comparingByValue()).getKey();
-            predictedCountries.add(predictedCountry);
-        }
-        return predictedCountries;
-
+        return null;
     }
 
 
