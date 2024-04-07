@@ -23,6 +23,7 @@ public class ProportionUniqueWordsToAllWordsExtractor implements Extractor<Doubl
             uniqueWords.add(word);
             totalWords++;
         }
+
         return (double) uniqueWords.size() / totalWords;
     }
 }

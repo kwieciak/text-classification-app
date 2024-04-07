@@ -28,6 +28,7 @@ public class ProportionUniqueWordsToCommonWordsExtractor implements Extractor<Do
         }
 
         int commonWords = wordCounter.values().stream().filter(v -> v >= THRESHOLD).mapToInt(Integer::intValue).sum();
+
         return (double) uniqueWords.size() / commonWords;
     }
 }

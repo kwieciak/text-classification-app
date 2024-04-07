@@ -8,7 +8,7 @@ public enum ExtractorType {
     MOST_USED_CITY(new MostUsedCityExtractor()),
     MOST_USED_SE(new MostUsedSeExtractor()), //Stock Exchange
     MOST_USED_CONTINENT(new MostUsedContinentExtractor()),
-    WORDS_DEPENDENCIES(new WordsDependenciesExtractor()),
+    //WORDS_DEPENDENCIES(new WordsDependenciesExtractor()),
     SUM_OF_WORDS_BEGINNING_WITH_CAPITAL_LETTER(new SumOfWordsBeginningWithCapitalLetterExtractor()),
     SUM_OF_UNIQUE_WORDS(new SumOfUniqueWordsExtractor()),
     SUM_OF_COMMON_WORDS(new SumOfCommonWordsExtractor()),
