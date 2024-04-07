@@ -23,12 +23,6 @@ public class SumOfCommonWordsExtractor implements Extractor<Integer> {
             String word = matcher.group();
             wordCounter.put(word, wordCounter.getOrDefault(word, 0) + 1);
         }
-
-        // TODO: USUNĄĆ TO, do debuggingu
-        wordCounter.entrySet().stream()
-                .filter(entry -> entry.getValue() >= THRESHOLD)
-                .forEach(entry -> System.out.println("Common word: " + entry.getKey() + ", Count: " + entry.getValue()));
-
         // getting the number of occurrences and filtering which ones are greater than or equal to the threshold (5)
         Stream<Integer> stream = wordCounter.values().stream().filter(v -> v >= THRESHOLD);
         // returning the sum as an integer

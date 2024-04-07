@@ -40,8 +40,10 @@ public class ArticleReader {
                     List<String> topicsList = extractElementsWithTheSameTag(topics);
                     List<String> placesList = extractElementsWithTheSameTag(places);
 
-                    Article article = new Article(placesList, topicsList, title, text);
-                    articles.add(article);
+                    if (!placesList.isEmpty()) {
+                        Article article = new Article(placesList, topicsList, title, text);
+                        articles.add(article);
+                    }
                 }
             }
             reader.close();

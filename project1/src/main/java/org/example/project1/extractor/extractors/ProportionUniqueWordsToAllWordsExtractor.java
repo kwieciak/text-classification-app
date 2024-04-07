@@ -23,11 +23,6 @@ public class ProportionUniqueWordsToAllWordsExtractor implements Extractor<Doubl
             uniqueWords.add(word);
             totalWords++;
         }
-
-        // TODO: USUNĄĆ TO, do debuggingu
-        System.out.println("Number of unique words: " + uniqueWords.size());
-        System.out.println("Total number of words: " + totalWords);
-
         return (double) uniqueWords.size() / totalWords;
     }
 }

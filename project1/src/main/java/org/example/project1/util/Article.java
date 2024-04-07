@@ -1,6 +1,7 @@
 package org.example.project1.util;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class Article {
     private String title;
     @Getter
     private String text;
+    @Setter
     @Getter
     private List<Object> featuresVector;
 
@@ -24,9 +26,5 @@ public class Article {
         this.text = text;
     }
 
-
-    public void setFeaturesVector(List<Object> featuresVector) {
-        this.featuresVector = featuresVector;
-    }
 }
 
