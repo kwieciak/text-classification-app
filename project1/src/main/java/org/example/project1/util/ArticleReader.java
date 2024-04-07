@@ -40,8 +40,19 @@ public class ArticleReader {
                     List<String> topicsList = extractElementsWithTheSameTag(topics);
                     List<String> placesList = extractElementsWithTheSameTag(places);
 
-                    Article article = new Article(placesList, topicsList, title, text);
-                    articles.add(article);
+                    if (placesList.size() == 1
+                            && (placesList.getFirst().equalsIgnoreCase("usa")
+                            || placesList.getFirst().equalsIgnoreCase("canada")
+                            || placesList.getFirst().equalsIgnoreCase("west-germany")
+                            || placesList.getFirst().equalsIgnoreCase("france")
+                            || placesList.getFirst().equalsIgnoreCase("japan")
+                            || placesList.getFirst().equalsIgnoreCase("uk"))
+                            && !text.isEmpty()){
+                        Article article = new Article(placesList, topicsList, title, text);
+                        articles.add(article);
+                    }
+
+
                 }
             }
             reader.close();
