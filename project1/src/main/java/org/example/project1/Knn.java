@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import org.example.project1.extractor.ExtractorType;
 import org.example.project1.util.Article;
 import org.example.project1.metric.Metric;
+import org.example.project1.util.ArticleFeatures;
 
 import java.util.*;
 
@@ -27,6 +28,7 @@ public class Knn {
                 featureVector.add(extractorType.getExtractor().extract(article));
             }
             article.setFeaturesVector(featureVector);
+            ArticleFeatures.convertNullsToZeros(article);
         }
 
         for (Article article : testingArticles) {
@@ -35,6 +37,7 @@ public class Knn {
                 featureVector.add(extractorType.getExtractor().extract(article));
             }
             article.setFeaturesVector(featureVector);
+            ArticleFeatures.convertNullsToZeros(article);
         }
     }
 

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.max;
 
 public class ArticleFeatures {
     public static void extractFeatures(Article article) {
@@ -22,6 +21,7 @@ public class ArticleFeatures {
             featuresVector.add(extractor.extract(article));
         }
         article.setFeaturesVector(featuresVector);
+        convertNullsToZeros(article);
     }
 
     public static void normalizeFeatures(List<Article> articles) {
@@ -57,6 +57,17 @@ public class ArticleFeatures {
                         normalizedValue = 0.0; // Set normalized value to 0
                     }
                     featuresVector.set(i, normalizedValue); // Update the feature value in the featuresVector
+                }
+            }
+        }
+    }
+
+    public static void convertNullsToZeros(Article article) {
+        List<Object> featuresVector = article.getFeaturesVector();
+        if (featuresVector != null) {
+            for (int i = 0; i < 5; i++) {
+                if (featuresVector.get(i) == null) {
+                    featuresVector.set(i, 0.0);
                 }
             }
         }

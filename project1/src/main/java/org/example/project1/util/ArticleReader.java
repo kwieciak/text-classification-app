@@ -1,20 +1,18 @@
 package org.example.project1.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class ArticleReader {
     private File file;
     private List<Article> articles = new ArrayList<>();
     private StringBuilder buffer = new StringBuilder();
     private String line = null;
+    private Set<String> stopwords = new HashSet<>();
 
     public ArticleReader(String filePath) {
         this.file = new File(filePath);
+        loadStopwords();
     }
 
     private static String[] META_CHARS = {"&", "<", ">", "\"", "'", ""};
@@ -35,6 +33,7 @@ public class ArticleReader {
                 if (line.contains("</REUTERS>")) {
                     String title = extractTagContent(buffer.toString(), "TITLE");
                     String text = extractTagContent(buffer.toString(), "BODY");
+                    text = removeStopwords(text);                           // NEW
                     String topics = extractTagContent(buffer.toString(), "TOPICS");
                     String places = extractTagContent(buffer.toString(), "PLACES");
                     List<String> topicsList = extractElementsWithTheSameTag(topics);
@@ -96,5 +95,30 @@ public class ArticleReader {
             }
         }
         return elements;
+    }
+
+    // STOPWORDS
+
+    private  void loadStopwords() {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(
+                Objects.requireNonNull(ArticleReader.class.getResourceAsStream("/org/example/project1/stopwords/stopwords.csv"))))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                stopwords.add(line.toLowerCase());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String removeStopwords(String text) {
+        StringBuilder cleanedText = new StringBuilder();
+        String[] words = text.split("\\s+");
+        for (String word : words) {
+            if (!stopwords.contains(word.toLowerCase())) {
+                cleanedText.append(word).append(" ");
+            }
+        }
+        return cleanedText.toString().trim();
     }
 }

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class SumOfCommonWordsExtractor implements Extractor<Integer> {
-    private static final int THRESHOLD = 5;         // how many times a word is considered common
+    private static final int THRESHOLD = 3;         // how many times a word is considered common
 
     @Override
     public Integer extract(Article article) {

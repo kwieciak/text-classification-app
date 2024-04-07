@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ProportionUniqueWordsToCommonWordsExtractor implements Extractor<Double> {
-    private static final int THRESHOLD = 5; // how many times a word is considered common
+    private static final int THRESHOLD = 3;     // how many times a word is considered common
 
     @Override
     public Double extract(Article article) {
@@ -28,6 +28,9 @@ public class ProportionUniqueWordsToCommonWordsExtractor implements Extractor<Do
         }
 
         int commonWords = wordCounter.values().stream().filter(v -> v >= THRESHOLD).mapToInt(Integer::intValue).sum();
+        if (commonWords == 0) {
+            return Double.MAX_VALUE;        // value that represents 'infinity' to avoid dividing by 0
+        }
 
         return (double) uniqueWords.size() / commonWords;
     }
