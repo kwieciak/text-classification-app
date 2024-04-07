@@ -11,23 +11,32 @@ import org.example.project1.util.ArticleFeatures;
 import org.example.project1.util.ArticleReader;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import static java.util.Collections.max;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         //Wczytanie wszystkich artykułów
         String directoryPath = "project1/data";
         List<Article> comparedArticleList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             String filePath = directoryPath + "/reut2-" + String.format("%03d", i) + ".sgm";
             ArticleReader articleReader = new ArticleReader(filePath);
             comparedArticleList.addAll(articleReader.readArticles());
         }
+        //Wyliczenie wartości cech dla każdego artykułu
         for (Article article: comparedArticleList) {
             ArticleFeatures.extractFeatures(article);
-            System.out.println(article.getFeaturesVector());
         }
+
+        //Normalizacja wartości cech liczbowych
+        ArticleFeatures.normalizeFeatures(comparedArticleList);
+
+
+
+
+
 
         //ArticleReader articleReader = new ArticleReader("project1/data/reut2-001.sgm");
         //List<Article> articles = articleReader.readArticles();
