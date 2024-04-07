@@ -40,6 +40,7 @@ public class ArticleReader {
                     List<String> topicsList = extractElementsWithTheSameTag(topics);
                     List<String> placesList = extractElementsWithTheSameTag(places);
 
+
                     if (placesList.size() == 1
                             && (placesList.getFirst().equalsIgnoreCase("usa")
                             || placesList.getFirst().equalsIgnoreCase("canada")

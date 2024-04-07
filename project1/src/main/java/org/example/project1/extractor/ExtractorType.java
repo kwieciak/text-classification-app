@@ -21,6 +21,8 @@ public enum ExtractorType {
         this.extractor = extractor;
     }
 
+
+
     public Extractor<?> getExtractor() {
         return extractor;
     }
