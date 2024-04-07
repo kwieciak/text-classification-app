@@ -25,14 +25,13 @@ public class ArticleFeatures {
     }
 
     public static void normalizeFeatures(List<Article> articles) {
-        // Find min and max values for numeric features
         Map<String, Double> minValues = new HashMap<>();
         Map<String, Double> maxValues = new HashMap<>();
         for (Article article : articles) {
             List<Object> featuresVector = article.getFeaturesVector();
             if (featuresVector != null) {
-                for (int i = 5; i < featuresVector.size(); i++) { // Start from index 5 to exclude string features
-                    String featureName = "Feature" + i; // Assign a name to each feature
+                for (int i = 5; i < featuresVector.size(); i++) {
+                    String featureName = "Feature" + i;
                     double value = ((Number) featuresVector.get(i)).doubleValue();
                     minValues.put(featureName, Math.min(minValues.getOrDefault(featureName, Double.MAX_VALUE), value));
                     maxValues.put(featureName, Math.max(maxValues.getOrDefault(featureName, Double.MIN_VALUE), value));
@@ -44,19 +43,18 @@ public class ArticleFeatures {
         for (Article article : articles) {
             List<Object> featuresVector = article.getFeaturesVector();
             if (featuresVector != null) {
-                for (int i = 5; i < featuresVector.size(); i++) { // Start from index 5 to exclude string features
+                for (int i = 5; i < featuresVector.size(); i++) {
                     String featureName = "Feature" + i;
                     double value = ((Number) featuresVector.get(i)).doubleValue();
                     double minValue = minValues.get(featureName);
                     double maxValue = maxValues.get(featureName);
                     double normalizedValue;
                     if (minValue != maxValue) {
-                        normalizedValue = (value - minValue) / (maxValue - minValue); // Perform normalization
+                        normalizedValue = (value - minValue) / (maxValue - minValue);
                     } else {
-                        // Handle case when min and max are the same (avoid division by zero)
                         normalizedValue = 0.0; // Set normalized value to 0
                     }
-                    featuresVector.set(i, normalizedValue); // Update the feature value in the featuresVector
+                    featuresVector.set(i, normalizedValue);
                 }
             }
         }

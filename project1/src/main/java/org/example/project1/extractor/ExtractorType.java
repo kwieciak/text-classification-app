@@ -22,7 +22,6 @@ public enum ExtractorType {
     }
 
 
-
     public Extractor<?> getExtractor() {
         return extractor;
     }

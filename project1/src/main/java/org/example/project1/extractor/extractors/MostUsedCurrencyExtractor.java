@@ -1,7 +1,7 @@
 package org.example.project1.extractor.extractors;
 
-import org.example.project1.CsvReader;
 import org.example.project1.extractor.Extractor;
+import org.example.project1.helpers.CsvReader;
 import org.example.project1.util.Article;
 
 import java.util.HashMap;

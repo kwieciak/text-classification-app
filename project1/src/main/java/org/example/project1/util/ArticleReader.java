@@ -33,7 +33,7 @@ public class ArticleReader {
                 if (line.contains("</REUTERS>")) {
                     String title = extractTagContent(buffer.toString(), "TITLE");
                     String text = extractTagContent(buffer.toString(), "BODY");
-                    text = removeStopwords(text);                           // NEW
+                    text = removeStopwords(text);
                     String topics = extractTagContent(buffer.toString(), "TOPICS");
                     String places = extractTagContent(buffer.toString(), "PLACES");
                     List<String> topicsList = extractElementsWithTheSameTag(topics);
@@ -47,7 +47,7 @@ public class ArticleReader {
                             || placesList.getFirst().equalsIgnoreCase("france")
                             || placesList.getFirst().equalsIgnoreCase("japan")
                             || placesList.getFirst().equalsIgnoreCase("uk"))
-                            && !text.isEmpty()){
+                            && !text.isEmpty()) {
                         Article article = new Article(placesList, topicsList, title, text);
                         articles.add(article);
                     }
@@ -99,7 +99,7 @@ public class ArticleReader {
 
     // STOPWORDS
 
-    private  void loadStopwords() {
+    private void loadStopwords() {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
                 Objects.requireNonNull(ArticleReader.class.getResourceAsStream("/org/example/project1/stopwords/stopwords.csv"))))) {
             String line;
