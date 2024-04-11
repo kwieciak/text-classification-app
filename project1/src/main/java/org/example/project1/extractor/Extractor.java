@@ -50,4 +50,17 @@ public interface Extractor<T> {
         return wordCounter;
     }
 
+
+    default int countAllWords(String text) {
+        return countWords(text).values().stream().mapToInt(Integer::intValue).sum();
+    }
+
+    default int countUniqueWords(String text) {
+        return (int) countWords(text).values().stream().filter(count -> count == 1).count();
+    }
+
+    default int countCommonWords(String text, int threshold) {
+        return countWords(text).values().stream().filter(count -> count >= threshold).mapToInt(Integer::intValue).sum();
+    }
+
 }

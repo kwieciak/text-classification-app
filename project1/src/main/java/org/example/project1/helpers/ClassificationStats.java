@@ -24,6 +24,21 @@ public class ClassificationStats {
         System.out.println("Global F1 Score: " + f1);
     }
 
+    public static void calculateClassStats(Map<String, int[]> confusionMatrix) {
+        System.out.printf("%-15s %-10s %-10s %-10s%n", "Class", "Precision", "Recall", "F1 Score");
+        for (Map.Entry<String, int[]> entry : confusionMatrix.entrySet()) {
+            int TP = entry.getValue()[0];
+            int FP = entry.getValue()[1];
+            int FN = entry.getValue()[3];
+
+            double precision = (TP + FP) == 0 ? 0 : (double) TP / (TP + FP);
+            double recall = (TP + FN) == 0 ? 0 : (double) TP / (TP + FN);
+            double f1 = (precision + recall) == 0 ? 0 : 2 * (precision * recall) / (precision + recall);
+
+            System.out.printf("%-15s %-10.2f %-10.2f %-10.2f%n", entry.getKey(), precision, recall, f1);
+        }
+    }
+
     public static void printConfusionMatrix(Map<String, int[]> confusionMatrix) {
         System.out.printf("%-15s %-5s %-5s %-5s %-5s%n", "Class", "TP", "FP", "TN", "FN");
         for (Map.Entry<String, int[]> entry : confusionMatrix.entrySet()) {

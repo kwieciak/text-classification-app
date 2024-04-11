@@ -30,15 +30,13 @@ public class Main {
         }
         ArticleFeatures.normalizeFeatures(articles);
 
-        for (Article article : articles) {
-            System.out.println("Feature Vector: " + article.getFeaturesVector());
-        }
         // kNN classification
         Metric metric = MetricType.EUCLIDEAN.createMetric();
         int k = 9;
         Knn knn = new Knn(k, metric, articles.subList(0, 600), articles.subList(600, 1000));
         Map<String, int[]> confusionMatrix = knn.calculateConfusionMatrix();
         ClassificationStats.calculateGlobalStats(confusionMatrix);
+        ClassificationStats.calculateClassStats(confusionMatrix);
         ClassificationStats.printConfusionMatrix(confusionMatrix);
     }
 

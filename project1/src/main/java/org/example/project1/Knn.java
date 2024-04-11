@@ -28,6 +28,7 @@ public class Knn {
             for (Article trainingArticle : trainingArticles) {
                 double distance = metric.calculateDistance(article.getFeaturesVector(), trainingArticle.getFeaturesVector());
                 distances.add(new Pair<>(distance, trainingArticle));
+
             }
 
             distances.sort(Comparator.comparing(Pair::getKey));

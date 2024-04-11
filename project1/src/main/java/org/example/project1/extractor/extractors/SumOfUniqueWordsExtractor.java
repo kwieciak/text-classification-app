@@ -8,8 +8,6 @@ public class SumOfUniqueWordsExtractor implements Extractor<Integer> {
 
     @Override
     public Integer extract(Article article) {
-        Map<String, Integer> wordCounter = countWords(article.getText().toLowerCase());
-        long uniqueWords = wordCounter.values().stream().filter(count -> count == 1).count();
-        return (int) uniqueWords;
+        return countUniqueWords(article.getText().toLowerCase());
     }
 }
