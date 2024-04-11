@@ -12,24 +12,21 @@ public class Knn {
     private final Metric metric;
     private final List<Article> trainingArticles;
     private final List<Article> testingArticles;
-    private final List<ExtractorType> featureTypes;
 
-    public Knn(int k, Metric metric, List<Article> trainingArticles, List<Article> testingArticles, List<ExtractorType> featureTypes) {
+
+    public Knn(int k, Metric metric, List<Article> trainingArticles, List<Article> testingArticles) {
         this.k = k;
         this.metric = metric;
         this.trainingArticles = trainingArticles;
         this.testingArticles = testingArticles;
-        this.featureTypes = featureTypes;
     }
 
-    public List<String> classifyArticles() {
+    public Pair<List<String>, List<Article>> classifyArticles() {
         List<String> classifiedArticles = new ArrayList<>();
         for (Article article : testingArticles) {
             List<Pair<Double, Article>> distances = new ArrayList<>();
             for (Article trainingArticle : trainingArticles) {
-                List<Object> articleFeatures = selectFeatures(article.getFeaturesVector());
-                List<Object> trainingArticleFeatures = selectFeatures(trainingArticle.getFeaturesVector());
-                double distance = metric.calculateDistance(articleFeatures, trainingArticleFeatures);
+                double distance = metric.calculateDistance(article.getFeaturesVector(), trainingArticle.getFeaturesVector());
                 distances.add(new Pair<>(distance, trainingArticle));
             }
 
@@ -43,24 +40,54 @@ public class Knn {
             String classifiedClass = Collections.max(classCounts.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
             classifiedArticles.add(classifiedClass);
         }
-        return classifiedArticles;
+        return new Pair<>(classifiedArticles, testingArticles);
     }
 
-    public double calculateAccuracy(List<String> classifiedArticles, List<Article> actualArticles) {
-        int correct = 0;
+//    public double calculateAccuracy(List<String> classifiedArticles, List<Article> actualArticles) {
+//        int correct = 0;
+//        for (int i = 0; i < classifiedArticles.size(); i++) {
+//            if (classifiedArticles.get(i).equals(actualArticles.get(i).getPlacesList().get(0))) {
+//                correct++;
+//            }
+//        }
+//        return (double) correct / classifiedArticles.size();
+//    }
+
+    public Map<String, int[]> calculateConfusionMatrix() {
+        Pair<List<String>, List<Article>> result = classifyArticles();
+        List<String> classifiedArticles = result.getKey();
+        List<Article> actualArticles = result.getValue();
+
+        List<String> classes = Arrays.asList("west germany", "usa", "france", "uk", "canada", "japan");
+        Map<String, int[]> confusionMatrix = new HashMap<>();
+        for (String className : classes) {
+            confusionMatrix.put(className, new int[4]);     // TP, FP, TN, FN
+        }
+
         for (int i = 0; i < classifiedArticles.size(); i++) {
-            if (classifiedArticles.get(i).equals(actualArticles.get(i).getPlacesList().get(0))) {
-                correct++;
+            String predictedClass = classifiedArticles.get(i);
+            String actualClass = actualArticles.get(i).getPlacesList().get(0);
+
+            for (String className : classes) {
+                if (className.equals(actualClass)) {
+                    if (className.equals(predictedClass)) {
+                        confusionMatrix.get(className)[0]++;    // TP
+                    } else {
+                        confusionMatrix.get(className)[3]++;    // FN
+                    }
+                } else {
+                    if (className.equals(predictedClass)) {
+                        confusionMatrix.get(className)[1]++;    // FP
+                    } else {
+                        confusionMatrix.get(className)[2]++;    // TN
+                    }
+                }
             }
         }
-        return (double) correct / classifiedArticles.size();
+
+        return confusionMatrix;
     }
 
-    private List<Object> selectFeatures(List<Object> featuresVector) {
-        List<Object> selectedFeatures = new ArrayList<>();
-        for (ExtractorType featureType : featureTypes) {
-            selectedFeatures.add(featuresVector.get(featureType.ordinal()));
-        }
-        return selectedFeatures;
-    }
 }
+
+
