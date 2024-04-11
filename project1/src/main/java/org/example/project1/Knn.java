@@ -4,7 +4,6 @@ import javafx.util.Pair;
 import org.example.project1.extractor.ExtractorType;
 import org.example.project1.metric.Metric;
 import org.example.project1.util.Article;
-import org.example.project1.util.ArticleFeatures;
 
 import java.util.*;
 
@@ -13,32 +12,14 @@ public class Knn {
     private final Metric metric;
     private final List<Article> trainingArticles;
     private final List<Article> testingArticles;
+    private final List<ExtractorType> featureTypes;
 
-    public Knn(int k, Metric metric, List<Article> trainingArticles, List<Article> testingArticles) {
+    public Knn(int k, Metric metric, List<Article> trainingArticles, List<Article> testingArticles, List<ExtractorType> featureTypes) {
         this.k = k;
         this.metric = metric;
         this.trainingArticles = trainingArticles;
         this.testingArticles = testingArticles;
-    }
-
-    public void assignFeatureVectors() {
-        for (Article article : trainingArticles) {
-            List<Object> featureVector = new ArrayList<>();
-            for (ExtractorType extractorType : ExtractorType.values()) {
-                featureVector.add(extractorType.getExtractor().extract(article));
-            }
-            article.setFeaturesVector(featureVector);
-            ArticleFeatures.convertNullsToZeros(article);
-        }
-
-        for (Article article : testingArticles) {
-            List<Object> featureVector = new ArrayList<>();
-            for (ExtractorType extractorType : ExtractorType.values()) {
-                featureVector.add(extractorType.getExtractor().extract(article));
-            }
-            article.setFeaturesVector(featureVector);
-            ArticleFeatures.convertNullsToZeros(article);
-        }
+        this.featureTypes = featureTypes;
     }
 
     public List<String> classifyArticles() {
@@ -46,7 +27,9 @@ public class Knn {
         for (Article article : testingArticles) {
             List<Pair<Double, Article>> distances = new ArrayList<>();
             for (Article trainingArticle : trainingArticles) {
-                double distance = metric.calculateDistance(article.getFeaturesVector(), trainingArticle.getFeaturesVector());
+                List<Object> articleFeatures = selectFeatures(article.getFeaturesVector());
+                List<Object> trainingArticleFeatures = selectFeatures(trainingArticle.getFeaturesVector());
+                double distance = metric.calculateDistance(articleFeatures, trainingArticleFeatures);
                 distances.add(new Pair<>(distance, trainingArticle));
             }
 
@@ -71,5 +54,13 @@ public class Knn {
             }
         }
         return (double) correct / classifiedArticles.size();
+    }
+
+    private List<Object> selectFeatures(List<Object> featuresVector) {
+        List<Object> selectedFeatures = new ArrayList<>();
+        for (ExtractorType featureType : featureTypes) {
+            selectedFeatures.add(featuresVector.get(featureType.ordinal()));
+        }
+        return selectedFeatures;
     }
 }
