@@ -1,5 +1,7 @@
 package org.example.project1;
 
+import org.example.project1.extractor.ExtractorType;
+import org.example.project1.helpers.ClassificationStats;
 import org.example.project1.metric.Metric;
 import org.example.project1.metric.MetricType;
 import org.example.project1.util.Article;
@@ -8,7 +10,9 @@ import org.example.project1.util.ArticleReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -28,12 +32,12 @@ public class Main {
 
         // kNN classification
         Metric metric = MetricType.EUCLIDEAN.createMetric();
-        for (int i = 1; i < 10; i++) {
-            Knn knn = new Knn(i, metric, articles.subList(0, 600), articles.subList(600, 1000));
-            List<String> classifiedArticles = knn.classifyArticles();
-            double accuracy = knn.calculateAccuracy(classifiedArticles, articles.subList(600, 1000));
-            System.out.println("Accuracy for k = " + i + ": " + accuracy);
-        }
-
+        int k = 9;
+        Knn knn = new Knn(k, metric, articles.subList(0, 600), articles.subList(600, 1000));
+        Map<String, int[]> confusionMatrix = knn.calculateConfusionMatrix();
+        ClassificationStats.calculateGlobalStats(confusionMatrix);
+        ClassificationStats.calculateClassStats(confusionMatrix);
+        ClassificationStats.printConfusionMatrix(confusionMatrix);
     }
+
 }

@@ -8,23 +8,6 @@ import java.util.List;
 public class ManhattanMetric implements Metric {
     @Override
     public double calculateDistance(List<Object> vector1, List<Object> vector2) {
-        if (vector1.size() == vector2.size()) {
-            double sum_diff = 0;
-            for (int i = 0; i < vector1.size(); i++) {
-                if (vector1.get(i) != null || vector2.get(i) != null) {
-                    if (vector1.get(i) instanceof String && vector2.get(i) instanceof String) {
-                        double measure = GeneralizedNgramMeasure.calculateMetric((String) vector1.get(i), (String) vector2.get(i));
-                        sum_diff += Math.abs(measure);
-                    } else if (vector1.get(i) instanceof Number && vector2.get(i) instanceof Number) {
-                        double value1 = ((Number) vector1.get(i)).doubleValue();
-                        double value2 = ((Number) vector2.get(i)).doubleValue();
-                        sum_diff += Math.abs(value1 - value2);
-                    }
-                }
-            }
-            return sum_diff;
-        } else {
-            throw new IllegalArgumentException("Vectors must have the same size");
-        }
+        return calculate(vector1, vector2, (sum, diff) -> sum + diff);
     }
 }
