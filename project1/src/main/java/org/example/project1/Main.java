@@ -30,6 +30,9 @@ public class Main {
         }
         ArticleFeatures.normalizeFeatures(articles);
 
+        for (Article article : articles) {
+            System.out.println("Feature Vector: " + article.getFeaturesVector());
+        }
         // kNN classification
         Metric metric = MetricType.EUCLIDEAN.createMetric();
         int k = 9;
