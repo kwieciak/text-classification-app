@@ -14,11 +14,12 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <ComboBox fx:id="chooseMetric" layoutX="116.0" layoutY="40.0" onAction="#changeMetric" prefHeight="25.0" prefWidth="130.0" promptText="Choose metric" />
+      <ComboBox fx:id="chooseMetric" layoutX="116.0" layoutY="40.0" onAction="#changeMetric" prefHeight="25.0" prefWidth="130.0" />
       <Label layoutX="273.0" layoutY="15.0" text="Number of neighbors" />
       <Slider fx:id="sliderTrainingPercent" layoutX="423.0" layoutY="46.0" majorTickUnit="20.0" max="90" min="10" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <Label layoutX="439.0" layoutY="23.0" text="\% of training articles" />
       <Button fx:id="startKnnButton" layoutX="195.0" layoutY="100.0" mnemonicParsing="false" onAction="#pressedStartKnn" text="Start the classification process" textAlignment="CENTER" />
       <TextField fx:id="numOfNeighbors" layoutX="283.0" layoutY="40.0" prefHeight="25.0" prefWidth="95.0" />
+      <Label layoutX="119.0" layoutY="15.0" text="Choose distance metric" />
    </children>
 </Pane>
