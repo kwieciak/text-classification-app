@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.project1.gui.AppController">
+   <children>
+      <Button layoutX="24.0" layoutY="40.0" mnemonicParsing="false" onAction="#pressedChooseFiles" text="Choose files" textAlignment="CENTER">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <ComboBox fx:id="chooseMetric" layoutX="116.0" layoutY="40.0" onAction="#changeMetric" prefHeight="25.0" prefWidth="130.0" />
+      <Label layoutX="273.0" layoutY="15.0" text="Number of neighbors" />
+      <Slider fx:id="sliderTrainingPercent" layoutX="423.0" layoutY="46.0" majorTickUnit="20.0" max="90" min="10" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Label layoutX="439.0" layoutY="23.0" text="\% of training articles" />
+      <Button fx:id="startKnnButton" layoutX="195.0" layoutY="100.0" mnemonicParsing="false" onAction="#pressedStartKnn" text="Start the classification process" textAlignment="CENTER" />
+      <TextField fx:id="numOfNeighbors" layoutX="283.0" layoutY="40.0" prefHeight="25.0" prefWidth="95.0" />
+      <Label layoutX="119.0" layoutY="15.0" text="Choose distance metric" />
+   </children>
+</Pane>
