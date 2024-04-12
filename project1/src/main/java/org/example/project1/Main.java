@@ -1,16 +1,14 @@
 package org.example.project1;
 
-import org.example.project1.extractor.ExtractorType;
-import org.example.project1.helpers.ClassificationStats;
+import org.example.project1.util.ClassificationStats;
 import org.example.project1.metric.Metric;
 import org.example.project1.metric.MetricType;
-import org.example.project1.util.Article;
-import org.example.project1.util.ArticleFeatures;
-import org.example.project1.util.ArticleReader;
+import org.example.project1.article.Article;
+import org.example.project1.article.ArticleFeatures;
+import org.example.project1.article.ArticleReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +30,7 @@ public class Main {
 
         // kNN classification
         Metric metric = MetricType.EUCLIDEAN.createMetric();
-        int k = 9;
+        int k = 5;
         Knn knn = new Knn(k, metric, articles.subList(0, 600), articles.subList(600, 1000));
         Map<String, int[]> confusionMatrix = knn.calculateConfusionMatrix();
         ClassificationStats.calculateGlobalStats(confusionMatrix);

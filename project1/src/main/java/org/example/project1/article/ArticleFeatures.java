@@ -1,4 +1,4 @@
-package org.example.project1.util;
+package org.example.project1.article;
 
 import org.example.project1.extractor.Extractor;
 import org.example.project1.extractor.ExtractorFactory;

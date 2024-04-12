@@ -3,11 +3,10 @@ package org.example.project1.gui;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
-import org.example.project1.Knn;
 import org.example.project1.metric.Metric;
 import org.example.project1.metric.MetricType;
-import org.example.project1.util.Article;
-import org.example.project1.util.ArticleReader;
+import org.example.project1.article.Article;
+import org.example.project1.article.ArticleReader;
 
 import java.io.File;
 import java.io.IOException;

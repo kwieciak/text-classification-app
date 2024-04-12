@@ -1,8 +1,7 @@
 package org.example.project1.extractor.extractors;
 
 import org.example.project1.extractor.Extractor;
-import org.example.project1.util.Article;
-import java.util.Map;
+import org.example.project1.article.Article;
 
 public class SumOfUniqueWordsExtractor implements Extractor<Integer> {
 

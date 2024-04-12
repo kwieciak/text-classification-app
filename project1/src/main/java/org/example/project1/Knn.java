@@ -1,9 +1,8 @@
 package org.example.project1;
 
 import javafx.util.Pair;
-import org.example.project1.extractor.ExtractorType;
 import org.example.project1.metric.Metric;
-import org.example.project1.util.Article;
+import org.example.project1.article.Article;
 
 import java.util.*;
 
@@ -28,18 +27,47 @@ public class Knn {
             for (Article trainingArticle : trainingArticles) {
                 double distance = metric.calculateDistance(article.getFeaturesVector(), trainingArticle.getFeaturesVector());
                 distances.add(new Pair<>(distance, trainingArticle));
-
             }
 
             distances.sort(Comparator.comparing(Pair::getKey));
             Map<String, Integer> classCounts = new HashMap<>();
+            Map<String, Double> classDistances = new HashMap<>();
             for (int i = 0; i < k; i++) {
-                String neighborClass = distances.get(i).getValue().getPlacesList().get(0);
+                String neighborClass = distances.get(i).getValue().getPlacesList().getFirst();
                 classCounts.put(neighborClass, classCounts.getOrDefault(neighborClass, 0) + 1);
+                classDistances.put(neighborClass, classDistances.getOrDefault(neighborClass, 0.0) + distances.get(i).getKey());
+            }
+            int maxCount = Collections.max(classCounts.values());
+            double minDistance = Double.POSITIVE_INFINITY;
+            String classifiedClass = null;
+            for (Map.Entry<String, Integer> entry: classCounts.entrySet()) {
+                String className = entry.getKey();
+                int count = entry.getValue();
+                double distance = classDistances.get(className);
+                if(count == maxCount && distance < minDistance) {
+                    minDistance = distance;
+                    classifiedClass = className;
+                }
+            }
+            if(classifiedClass != null) {
+                classifiedArticles.add(classifiedClass);
             }
 
-            String classifiedClass = Collections.max(classCounts.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
-            classifiedArticles.add(classifiedClass);
+
+
+//            for (String className : classCounts.keySet()) {
+//                if (classCounts.get(className) == maxCount) {
+//                    if(classDistances.get(className) < minDistance) {
+//                        minDistance = classDistances.get(className);
+//                    }
+//                }
+//            }
+//            for (String className : classCounts.keySet()) {
+//                if (classDistances.get(className) == minDistance) {
+//                    classifiedArticles.add(className);
+//                    break;
+//                }
+//            }
         }
         return new Pair<>(classifiedArticles, testingArticles);
     }
@@ -67,7 +95,7 @@ public class Knn {
 
         for (int i = 0; i < classifiedArticles.size(); i++) {
             String predictedClass = classifiedArticles.get(i);
-            String actualClass = actualArticles.get(i).getPlacesList().get(0);
+            String actualClass = actualArticles.get(i).getPlacesList().getFirst();
 
             for (String className : classes) {
                 if (className.equals(actualClass)) {
