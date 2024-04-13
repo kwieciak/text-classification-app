@@ -8,6 +8,8 @@ module org.example.project1 {
     requires org.apache.commons.io;
     requires com.opencsv;
     requires static lombok;
+    requires org.jfree.jfreechart;
+    requires java.desktop;
 
     opens org.example.project1 to javafx.fxml;
     exports org.example.project1;

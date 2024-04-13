@@ -20,7 +20,7 @@ public class Main {
         // Loading all articles
         String directoryPath = "project1/data";
         List<Article> articles = new ArrayList<>();
-        for (int i = 0; i < 22; i++) {
+        for (int i = 0; i <5; i++) {
             String filePath = directoryPath + "/reut2-" + String.format("%03d", i) + ".sgm";
             ArticleReader articleReader = new ArticleReader(filePath);
             articles.addAll(articleReader.readArticles());

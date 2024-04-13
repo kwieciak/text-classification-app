@@ -3,6 +3,9 @@ package org.example.project1.util;
 import java.util.Map;
 
 public class ClassificationStats {
+
+    static ChartDrawer chartDrawer;
+
     public static void calculateGlobalStats(Map<String, int[]> confusionMatrix) {
         int totalTP = 0, totalFP = 0, totalTN = 0, totalFN = 0;
 
@@ -50,5 +53,10 @@ public class ClassificationStats {
                     entry.getValue()[3]
             );
         }
+        chartDrawer = new ChartDrawer("Confusion Matrix", "Confusion Matrix", confusionMatrix);
+        chartDrawer.pack();
+        chartDrawer.setVisible(true);;
     }
+
+
 }
