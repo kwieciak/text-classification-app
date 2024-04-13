@@ -52,6 +52,22 @@ public class Knn {
             if(classifiedClass != null) {
                 classifiedArticles.add(classifiedClass);
             }
+
+
+
+//            for (String className : classCounts.keySet()) {
+//                if (classCounts.get(className) == maxCount) {
+//                    if(classDistances.get(className) < minDistance) {
+//                        minDistance = classDistances.get(className);
+//                    }
+//                }
+//            }
+//            for (String className : classCounts.keySet()) {
+//                if (classDistances.get(className) == minDistance) {
+//                    classifiedArticles.add(className);
+//                    break;
+//                }
+//            }
         }
         return new Pair<>(classifiedArticles, testingArticles);
     }

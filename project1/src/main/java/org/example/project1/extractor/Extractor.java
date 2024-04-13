@@ -12,8 +12,7 @@ import java.util.regex.Pattern;
 public interface Extractor<T> {
     T extract(Article article);
 
-    default String extractStringFeature(String text, String csvFilePath) {
-        Map<String, List<String>> featureTerms = CsvReader.readCsv(csvFilePath);
+    default String extractStringFeature(String text, Map<String, List<String>> featureTerms) {
         Map<String, Integer> featureCounter = new HashMap<>();
 
         for (String featureTerm : featureTerms.keySet()) {
