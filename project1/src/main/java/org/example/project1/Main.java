@@ -1,5 +1,7 @@
 package org.example.project1;
 
+import org.example.project1.extractor.Extractor;
+import org.example.project1.extractor.ExtractorType;
 import org.example.project1.extractor.WordCounterBuffer;
 import org.example.project1.extractor.WordDictionaries;
 import org.example.project1.util.ClassificationStats;
@@ -19,7 +21,7 @@ public class Main {
         // Loading all articles
         String directoryPath = "project1/data";
         List<Article> articles = new ArrayList<>();
-        for (int i = 0; i < 22; i++) {
+        for (int i = 0; i < 3; i++) {
             String filePath = directoryPath + "/reut2-" + String.format("%03d", i) + ".sgm";
             ArticleReader articleReader = new ArticleReader(filePath);
             articles.addAll(articleReader.readArticles());
@@ -27,9 +29,18 @@ public class Main {
         System.out.println("Wczytywanie danych skonczone");
         long start = System.currentTimeMillis();
         WordCounterBuffer wordCounterBuffer = new WordCounterBuffer();
+        //Now u have to choose which extractors u want to use
+        List<ExtractorType> chosenExtractors = new ArrayList<>();
+        chosenExtractors.add(ExtractorType.MOST_USED_CITY);
+        chosenExtractors.add(ExtractorType.PROPORTION_UNIQUE_WORDS_TO_ALL_WORDS);
+        chosenExtractors.add(ExtractorType.PROPORTION_UNIQUE_WORDS_TO_COMMON_WORDS);
+        chosenExtractors.add(ExtractorType.SUM_OF_COMMON_WORDS);
+        chosenExtractors.add(ExtractorType.SUM_OF_UNIQUE_WORDS);
+        chosenExtractors.add(ExtractorType.SUM_OF_WORDS_BEGINNING_WITH_CAPITAL_LETTER);
         // Extracting features for each article and normalizing them
         for (Article article : articles) {
-            ArticleFeatures.extractFeatures(article, wordCounterBuffer);
+            ArticleFeatures.extractFeatures(article, wordCounterBuffer, chosenExtractors);
+            System.out.println(article.getFeaturesVector());
         }
         long finish = System.currentTimeMillis();
         System.out.println("Ekstrakcja cech skonczona");

@@ -12,12 +12,12 @@ import java.util.Map;
 
 
 public class ArticleFeatures {
-    public static void extractFeatures(Article article, WordCounterBuffer wordCounterBuffer){
+    public static void extractFeatures(Article article, WordCounterBuffer wordCounterBuffer, List<ExtractorType>chosenExtractors) {
         List<Object> featuresVector = article.getFeaturesVector();
         if (featuresVector == null) {
             featuresVector = new ArrayList<>();
         }
-        for (ExtractorType extractorType : ExtractorType.values()) {
+        for (ExtractorType extractorType : chosenExtractors) {
             Extractor<?> extractor = ExtractorFactory.createExtractor(extractorType, wordCounterBuffer);
             featuresVector.add(extractor.extract(article));
         }
