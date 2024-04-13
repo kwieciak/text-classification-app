@@ -64,7 +64,7 @@ public class ArticleFeatures {
     public static void convertNullsToZeros(Article article) {
         List<Object> featuresVector = article.getFeaturesVector();
         if (featuresVector != null) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < featuresVector.size(); i++) {
                 if (featuresVector.get(i) == null) {
                     featuresVector.set(i, 0.0);
                 }
