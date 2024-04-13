@@ -1,4 +1,4 @@
-package org.example.project1.util;
+package org.example.project1.article;
 
 import lombok.Getter;
 import lombok.Setter;

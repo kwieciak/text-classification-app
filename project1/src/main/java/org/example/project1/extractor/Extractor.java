@@ -1,7 +1,7 @@
 package org.example.project1.extractor;
 
-import org.example.project1.helpers.CsvReader;
-import org.example.project1.util.Article;
+import org.example.project1.article.Article;
+import org.example.project1.util.CsvReader;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +12,7 @@ import java.util.regex.Pattern;
 public interface Extractor<T> {
     T extract(Article article);
 
-    default String extractStringFeature(Article article, String csvFilePath) {
-        String text = article.getText().toLowerCase();
+    default String extractStringFeature(String text, String csvFilePath) {
         Map<String, List<String>> featureTerms = CsvReader.readCsv(csvFilePath);
         Map<String, Integer> featureCounter = new HashMap<>();
 
@@ -39,28 +38,6 @@ public interface Extractor<T> {
                 .orElse(null);
     }
 
-    default Map<String, Integer> countWords(String text) {
-        Map<String, Integer> wordCounter = new HashMap<>();
-        Pattern pattern = Pattern.compile("\\b[a-zA-Z]+\\b");
-        Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            String word = matcher.group();
-            wordCounter.put(word, wordCounter.getOrDefault(word, 0) + 1);
-        }
-        return wordCounter;
-    }
 
-
-    default int countAllWords(String text) {
-        return countWords(text).values().stream().mapToInt(Integer::intValue).sum();
-    }
-
-    default int countUniqueWords(String text) {
-        return (int) countWords(text).values().stream().filter(count -> count == 1).count();
-    }
-
-    default int countCommonWords(String text, int threshold) {
-        return countWords(text).values().stream().filter(count -> count >= threshold).mapToInt(Integer::intValue).sum();
-    }
 
 }

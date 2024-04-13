@@ -13,6 +13,6 @@ module org.example.project1 {
     exports org.example.project1;
     exports org.example.project1.gui;
     opens org.example.project1.gui to javafx.fxml;
-    exports org.example.project1.helpers;
-    opens org.example.project1.helpers to javafx.fxml;
+    exports org.example.project1.util;
+    opens org.example.project1.util to javafx.fxml;
 }

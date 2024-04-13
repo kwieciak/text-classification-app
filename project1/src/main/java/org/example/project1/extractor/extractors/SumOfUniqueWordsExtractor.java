@@ -1,13 +1,16 @@
 package org.example.project1.extractor.extractors;
 
 import org.example.project1.extractor.Extractor;
-import org.example.project1.util.Article;
-import java.util.Map;
+import org.example.project1.article.Article;
+import org.example.project1.extractor.WordCounterBuffer;
 
 public class SumOfUniqueWordsExtractor implements Extractor<Integer> {
-
+    private WordCounterBuffer wordCounterBuffer;
+    public SumOfUniqueWordsExtractor(WordCounterBuffer wordCounterBuffer) {
+        this.wordCounterBuffer = wordCounterBuffer;
+    }
     @Override
     public Integer extract(Article article) {
-        return countUniqueWords(article.getText().toLowerCase());
+        return wordCounterBuffer.getUniqueWords(article);
     }
 }
