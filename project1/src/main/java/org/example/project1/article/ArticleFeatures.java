@@ -3,6 +3,7 @@ package org.example.project1.article;
 import org.example.project1.extractor.Extractor;
 import org.example.project1.extractor.ExtractorFactory;
 import org.example.project1.extractor.ExtractorType;
+import org.example.project1.extractor.WordCounterBuffer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,13 +12,13 @@ import java.util.Map;
 
 
 public class ArticleFeatures {
-    public static void extractFeatures(Article article) {
+    public static void extractFeatures(Article article, WordCounterBuffer wordCounterBuffer){
         List<Object> featuresVector = article.getFeaturesVector();
         if (featuresVector == null) {
             featuresVector = new ArrayList<>();
         }
         for (ExtractorType extractorType : ExtractorType.values()) {
-            Extractor<?> extractor = ExtractorFactory.createExtractor(extractorType);
+            Extractor<?> extractor = ExtractorFactory.createExtractor(extractorType, wordCounterBuffer);
             featuresVector.add(extractor.extract(article));
         }
         article.setFeaturesVector(featuresVector);
