@@ -31,6 +31,7 @@ public class ClassificationStats {
             int FP = entry.getValue()[1];
             int FN = entry.getValue()[3];
 
+            double accuracy = (TP + FP) == 0 ? 0 : (double) (TP + FN) / (TP + FP + FN);
             double precision = (TP + FP) == 0 ? 0 : (double) TP / (TP + FP);
             double recall = (TP + FN) == 0 ? 0 : (double) TP / (TP + FN);
             double f1 = (precision + recall) == 0 ? 0 : 2 * (precision * recall) / (precision + recall);

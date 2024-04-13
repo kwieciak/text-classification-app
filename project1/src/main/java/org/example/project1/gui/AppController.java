@@ -1,23 +1,25 @@
 package org.example.project1.gui;
 
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.example.project1.Knn;
 import org.example.project1.extractor.ExtractorType;
+import org.example.project1.helpers.ClassificationStats;
 import org.example.project1.measure.GeneralizedNgramMeasure;
 import org.example.project1.metric.Metric;
 import org.example.project1.metric.MetricType;
 import org.example.project1.util.Article;
+import org.example.project1.util.ArticleFeatures;
 import org.example.project1.util.ArticleReader;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +29,7 @@ public class AppController {
     @FXML
     public ListView extractorsList;
     @FXML
-    public TableView confusionMatrix;
+    public GridPane resultsGrid;
     @FXML
     private Button startKnnButton;
     @FXML
@@ -46,7 +48,6 @@ public class AppController {
 
     @FXML
     public void initialize() {
-        initializeConfusionMatrix();
         chooseMetric.getItems().addAll(MetricType.values());
         chooseMeasure.getItems().addAll("GENERALIZED N-GRAM");
         extractorsList.getItems().addAll(ExtractorType.values());
@@ -87,14 +88,6 @@ public class AppController {
         }
     }
 
-//    private List<Article> loadArticlesFromDirectory(String directoryPath) throws IOException {
-//        for (int i = 0; i < 3; i++) {
-//            String filePath = directoryPath + "/reut2-" + String.format("%03d", i) + ".sgm";
-//            ArticleReader articleReader = new ArticleReader(filePath);
-//            articles.addAll(articleReader.readArticles());
-//        }
-//    }
-
     @FXML
     public void changeMetric() {
         String metricName = chooseMetric.getSelectionModel().getSelectedItem().toString();
@@ -106,11 +99,14 @@ public class AppController {
     @FXML
     public void pressedStartKnn() {
         ObservableList<ExtractorType> selectedExtractors = extractorsList.getSelectionModel().getSelectedItems();
-        if (metric == null || measure == null || numOfNeighbors.getText().isEmpty() || sliderTrainingPercent.getValue() == 0 || selectedExtractors.isEmpty()) {
+        if (metric == null || numOfNeighbors.getText().isEmpty() || sliderTrainingPercent.getValue() == 0) {
             popUpWindow.showInfo("Please select a metric, measure, number of neighbors, features to extract and a percent of training articles before starting kNN.");
             return;
         }
-
+        for (Article article : articles) {
+            ArticleFeatures.extractFeatures(article);
+        }
+        ArticleFeatures.normalizeFeatures(articles);
         double trainingPercent = sliderTrainingPercent.getValue() / 100.0;
         List<ExtractorType> extractors = new ArrayList<>(selectedExtractors);
         int k = Integer.parseInt(numOfNeighbors.getText());
@@ -119,53 +115,64 @@ public class AppController {
         List<Article> trainingSet = articles.subList(0, trainingArticles);
         List<Article> testingSet = articles.subList(trainingArticles, totalArticles);
         System.out.println("Starting Knn with k=" + k + ", metric=" + metric + ", trainingSet=" + trainingSet.size() + ", testingSet=" + testingSet.size() + ", extractors=" + extractors);
-//        Knn knn = new Knn(k, metric, trainingSet, testingSet);
+        Knn knn = new Knn(k, metric, trainingSet, testingSet);
+////        Map<String, Map<String, Integer>> confusionMatrix = knn.calculateConfusionMatrix();
+        Map<String, int[]> confusionMatrix = knn.calculateConfusionMatrix();
+        populateResultsGrid(resultsGrid, confusionMatrix);
+////        displayResults(confusionMatrix);
+//        ClassificationStats.calculateGlobalStats(confusionMatrix);
+//        ClassificationStats.calculateClassStats(confusionMatrix);
     }
 
-    public void populateConfusionMatrix(Map<String, int[]> confusionMatrixData) {
-        for (Map.Entry<String, int[]> entry : confusionMatrixData.entrySet()) {
-            ConfusionMatrixRow row = new ConfusionMatrixRow(
-                    entry.getKey(),
-                    entry.getValue()[0],
-                    entry.getValue()[1],
-                    entry.getValue()[2],
-                    entry.getValue()[3],
-                    entry.getValue()[4],
-                    entry.getValue()[5]
-            );
-            confusionMatrix.getItems().add(row);
+    public void populateResultsGrid(GridPane resultsGrid, Map<String, int[]> confusionMatrix) {
+        // Clear the GridPane
+        resultsGrid.getChildren().clear();
+        resultsGrid.getRowConstraints().clear();
+
+        // Calculate global stats
+        int totalTP = 0, totalFP = 0, totalTN = 0, totalFN = 0;
+        for (int[] values : confusionMatrix.values()) {
+            totalTP += values[0];
+            totalFP += values[1];
+            totalTN += values[2];
+            totalFN += values[3];
+        }
+        double accuracy = (double) (totalTP + totalTN) / (totalTP + totalFP + totalTN + totalFN);
+        double recall = (double) totalTP / (totalTP + totalFN);
+        double precision = (double) totalTP / (totalTP + totalFP);
+        double f1 = 2 * (precision * recall) / (precision + recall);
+
+        resultsGrid.add(new Label("Accuracy"), 1, 0);
+        resultsGrid.add(new Label("Recall"), 2, 0);
+        resultsGrid.add(new Label("Precision"), 3, 0);
+        resultsGrid.add(new Label("F1 Score"), 4, 0);
+
+        resultsGrid.add(new Label("Global"), 0, 1);
+        resultsGrid.add(new Label(String.format("%.2f", accuracy)), 1, 1);
+        resultsGrid.add(new Label(String.format("%.2f", recall)), 2, 1);
+        resultsGrid.add(new Label(String.format("%.2f", precision)), 3, 1);
+        resultsGrid.add(new Label(String.format("%.2f", f1)), 4, 1);
+
+        // Calculate class stats and add them to the GridPane
+        int rowIndex = 4;
+        for (Map.Entry<String, int[]> entry : confusionMatrix.entrySet()) {
+            int TP = entry.getValue()[0];
+            int FP = entry.getValue()[1];
+            int FN = entry.getValue()[3];
+
+            accuracy = (TP + FP) == 0 ? 0 : (double) (TP + FN) / (TP + FP + FN);
+            precision = (TP + FP) == 0 ? 0 : (double) TP / (TP + FP);
+            recall = (TP + FN) == 0 ? 0 : (double) TP / (TP + FN);
+            f1 = (precision + recall) == 0 ? 0 : 2 * (precision * recall) / (precision + recall);
+
+            resultsGrid.add(new Label(entry.getKey()), 0, rowIndex);
+            resultsGrid.add(new Label(String.format("%.2f", accuracy)), 1, rowIndex);
+            resultsGrid.add(new Label(String.format("%.2f", precision)), 2, rowIndex);
+            resultsGrid.add(new Label(String.format("%.2f", recall)), 3, rowIndex);
+            resultsGrid.add(new Label(String.format("%.2f", f1)), 4, rowIndex);
+            rowIndex++;
         }
     }
-
-    @FXML
-    public void initializeConfusionMatrix() {
-        confusionMatrix.getColumns().clear();
-        confusionMatrix.getItems().clear();
-
-        TableColumn<ConfusionMatrixRow, String> actualClassColumn = new TableColumn<>("Actual Class");
-        actualClassColumn.setCellValueFactory(new PropertyValueFactory<>("actualClass"));
-
-        TableColumn<ConfusionMatrixRow, Number> japanColumn = new TableColumn<>("Japan");
-        japanColumn.setCellValueFactory(new PropertyValueFactory<>("japan"));
-
-        TableColumn<ConfusionMatrixRow, Number> germanyColumn = new TableColumn<>("West Germany");
-        germanyColumn.setCellValueFactory(new PropertyValueFactory<>("germany"));
-
-        TableColumn<ConfusionMatrixRow, Number> ukColumn = new TableColumn<>("UK");
-        ukColumn.setCellValueFactory(new PropertyValueFactory<>("uk"));
-
-        TableColumn<ConfusionMatrixRow, Number> usaColumn = new TableColumn<>("USA");
-        usaColumn.setCellValueFactory(new PropertyValueFactory<>("usa"));
-
-        TableColumn<ConfusionMatrixRow, Number> canadaColumn = new TableColumn<>("Canada");
-        canadaColumn.setCellValueFactory(new PropertyValueFactory<>("canada"));
-
-        TableColumn<ConfusionMatrixRow, Number> franceColumn = new TableColumn<>("France");
-        franceColumn.setCellValueFactory(new PropertyValueFactory<>("france"));
-
-        confusionMatrix.getColumns().addAll(actualClassColumn, japanColumn, germanyColumn, ukColumn, usaColumn, canadaColumn, franceColumn);
-    }
-
 
     @FXML
     public void changeMeasure() {

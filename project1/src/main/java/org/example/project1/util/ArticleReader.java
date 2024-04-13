@@ -39,21 +39,36 @@ public class ArticleReader {
                     List<String> topicsList = extractElementsWithTheSameTag(topics);
                     List<String> placesList = extractElementsWithTheSameTag(places);
 
-
                     if (placesList.size() == 1
                             && (placesList.getFirst().equalsIgnoreCase("usa")
                             || placesList.getFirst().equalsIgnoreCase("canada")
                             || placesList.getFirst().equalsIgnoreCase("west-germany")
                             || placesList.getFirst().equalsIgnoreCase("france")
                             || placesList.getFirst().equalsIgnoreCase("japan")
-                            || placesList.getFirst().equalsIgnoreCase("uk"))
-                            && !text.isEmpty()) {
+                            || placesList.getFirst().equalsIgnoreCase("uk"))) {
                         Article article = new Article(placesList, topicsList, title, text);
+                        System.out.println(placesList);
                         articles.add(article);
+                    } else if (placesList.size() > 1) {
+                        List<String> newPlacesList = new ArrayList<>();
+                        for (String place : placesList) {
+                            if (place.equalsIgnoreCase("west-germany")
+                                    || place.equalsIgnoreCase("canada")
+                                    || place.equalsIgnoreCase("france")
+                                    || place.equalsIgnoreCase("uk")
+                                    || place.equalsIgnoreCase("japan")
+                                    || place.equalsIgnoreCase("usa")) {
+                                newPlacesList.add(place);
+                            }
+                        }
+                        if (!newPlacesList.isEmpty()) {
+                            newPlacesList.subList(1,  newPlacesList.size()).clear();
+                            Article article = new Article(newPlacesList, topicsList, title, text);
+                            articles.add(article);
+                        }
                     }
-
-
                 }
+
             }
             reader.close();
             return articles;
