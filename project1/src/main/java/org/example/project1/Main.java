@@ -3,7 +3,6 @@ package org.example.project1;
 import org.example.project1.extractor.Extractor;
 import org.example.project1.extractor.ExtractorType;
 import org.example.project1.extractor.WordCounterBuffer;
-import org.example.project1.extractor.WordDictionaries;
 import org.example.project1.util.ClassificationStats;
 import org.example.project1.metric.Metric;
 import org.example.project1.metric.MetricType;

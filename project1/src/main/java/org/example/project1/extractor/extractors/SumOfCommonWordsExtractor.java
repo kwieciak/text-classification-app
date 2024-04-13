@@ -4,6 +4,8 @@ import org.example.project1.extractor.Extractor;
 import org.example.project1.article.Article;
 import org.example.project1.extractor.WordCounterBuffer;
 
+import java.util.List;
+
 public class SumOfCommonWordsExtractor implements Extractor<Integer> {
     static final int THRESHOLD = 3;         // how many times a word is considered common
     private WordCounterBuffer wordCounterBuffer;

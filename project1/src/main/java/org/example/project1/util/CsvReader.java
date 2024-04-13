@@ -8,12 +8,13 @@ import com.opencsv.exceptions.CsvException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CsvReader {
     public CsvReader() {
     }
 
-    public static Map<String, List<String>> readCsv(String path) {
+    public static List<String> readCsv(String path) {
         Map<String, List<String>> records = new LinkedHashMap<>();
         try (CSVReader csvReader = new CSVReaderBuilder(new FileReader(path))
                 .withCSVParser(new CSVParserBuilder()
@@ -39,7 +40,7 @@ public class CsvReader {
         } catch (IOException | CsvException e) {
             throw new RuntimeException(e);
         }
-        return sortMap(records);
+        return records.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     private static Map<String, List<String>> sortMap(Map<String, List<String>> map) {

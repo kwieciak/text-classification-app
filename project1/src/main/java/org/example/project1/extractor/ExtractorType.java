@@ -3,7 +3,6 @@ package org.example.project1.extractor;
 import org.example.project1.extractor.extractors.*;
 
 public enum ExtractorType {
-
     MOST_USED_COUNTRY,
     MOST_USED_CURRENCY,
     MOST_USED_CITY,
