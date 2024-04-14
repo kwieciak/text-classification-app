@@ -26,6 +26,7 @@ public class Main {
             articles.addAll(articleReader.readArticles());
         }
         System.out.println("Wczytywanie danych skonczone");
+        System.out.println(articles.size());
         long start = System.currentTimeMillis();
         WordCounterBuffer wordCounterBuffer = new WordCounterBuffer();
         //Now u have to choose which extractors u want to use
@@ -43,11 +44,15 @@ public class Main {
         // Extracting features for each article and normalizing them
         for (Article article : articles) {
             ArticleFeatures.extractFeatures(article, wordCounterBuffer, chosenExtractors);
+            //System.out.println(article.getFeaturesVector());
         }
         long finish = System.currentTimeMillis();
         System.out.println("Ekstrakcja cech skonczona");
         System.out.println("Czas ekstrakcji cech: " + (finish - start) + " ms");
         ArticleFeatures.normalizeFeatures(articles);
+        for (Article article : articles) {
+            System.out.println(article.getFeaturesVector());
+        }
         System.out.println("Normalizacja cech skonczona");
 
         // kNN classification

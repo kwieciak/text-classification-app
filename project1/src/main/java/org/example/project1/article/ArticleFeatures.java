@@ -34,13 +34,13 @@ public class ArticleFeatures {
             int i = 0;
             List<Object> featuresVector = article.getFeaturesVector();
             for(Object v : featuresVector){
-                if(!(v instanceof String)){
+                if(v instanceof Double || v instanceof Integer){
                     String featureName = "Feature" + i;
                     double value = ((Number) v).doubleValue();
                     minValues.put(featureName, Math.min(minValues.getOrDefault(featureName, Double.MAX_VALUE), value));
                     maxValues.put(featureName, Math.max(maxValues.getOrDefault(featureName, Double.MIN_VALUE), value));
-                    i++;
                 }
+                i++;
             }
         }
 
@@ -50,7 +50,7 @@ public class ArticleFeatures {
             List<Object> featuresVector = article.getFeaturesVector();
             if (featuresVector != null) {
                 for(Object v : featuresVector){
-                    if(!(v instanceof String)){
+                    if(v instanceof Double || v instanceof Integer){
                         String featureName = "Feature" + i;
                         double value = ((Number) v).doubleValue();
                         double minValue = minValues.get(featureName);
@@ -62,8 +62,8 @@ public class ArticleFeatures {
                             normalizedValue = 0.0; // Set normalized value to 0
                         }
                         featuresVector.set(i, normalizedValue);
-                        i++;
                     }
+                    i++;
                 }
             }
         }
