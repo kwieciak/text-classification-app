@@ -34,6 +34,9 @@ public class ChartDrawer extends JFrame {
                 PlotOrientation.VERTICAL,
                 true, true, false);
 
+        ChartPanel chartPanel = new ChartPanel(barChart);
+        chartPanel.setPreferredSize(new Dimension(600, 500));
+
         return new ChartPanel(barChart);
     }
 
