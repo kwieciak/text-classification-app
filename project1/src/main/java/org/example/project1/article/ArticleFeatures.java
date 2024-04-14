@@ -14,7 +14,7 @@ import java.util.Map;
 public class ArticleFeatures {
     static ExtractorFactory extractorFactory = new ExtractorFactory();
 
-        public static void extractFeatures(Article article, WordCounterBuffer wordCounterBuffer, List<ExtractorType>chosenExtractors) {
+    public static void extractFeatures(Article article, WordCounterBuffer wordCounterBuffer, List<ExtractorType>chosenExtractors) {
         List<Object> featuresVector = article.getFeaturesVector();
         if (featuresVector == null) {
             featuresVector = new ArrayList<>();
@@ -42,12 +42,6 @@ public class ArticleFeatures {
                     i++;
                 }
             }
-//            for (int i = 5; i < featuresVector.size(); i++) {
-//                String featureName = "Feature" + i;
-//                double value = ((Number) featuresVector.get(i)).doubleValue();
-//                minValues.put(featureName, Math.min(minValues.getOrDefault(featureName, Double.MAX_VALUE), value));
-//                maxValues.put(featureName, Math.max(maxValues.getOrDefault(featureName, Double.MIN_VALUE), value));
-//            }
         }
 
         // Normalize numeric features in each article
@@ -71,19 +65,6 @@ public class ArticleFeatures {
                         i++;
                     }
                 }
-//                for (int i = 5; i < featuresVector.size(); i++) {
-//                    String featureName = "Feature" + i;
-//                    double value = ((Number) featuresVector.get(i)).doubleValue();
-//                    double minValue = minValues.get(featureName);
-//                    double maxValue = maxValues.get(featureName);
-//                    double normalizedValue;
-//                    if (minValue != maxValue) {
-//                        normalizedValue = (value - minValue) / (maxValue - minValue);
-//                    } else {
-//                        normalizedValue = 0.0; // Set normalized value to 0
-//                    }
-//                    featuresVector.set(i, normalizedValue);
-//                }
             }
         }
     }
