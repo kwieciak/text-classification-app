@@ -128,13 +128,13 @@ public class AppController {
         Knn knn = new Knn(k, metric, trainingSet, testingSet);
 ////        Map<String, Map<String, Integer>> confusionMatrix = knn.calculateConfusionMatrix();
         Map<String, int[]> confusionMatrix = knn.calculateConfusionMatrix();
-        populateResultsGrid(resultsGrid, confusionMatrix, testingSetSize);
+        populateResultsGrid(resultsGrid, accuracyGrid, confusionMatrix, testingSetSize);
 ////        displayResults(confusionMatrix);
 //        ClassificationStats.calculateGlobalStats(confusionMatrix);
 //        ClassificationStats.calculateClassStats(confusionMatrix);
     }
 
-    public void populateResultsGrid(GridPane resultsGrid, Map<String, int[]> confusionMatrix, int testingSetSize) {
+    public void populateResultsGrid(GridPane resultsGrid, GridPane accuracyGrid, Map<String, int[]> confusionMatrix, int testingSetSize) {
         // Clear the GridPane
         resultsGrid.getChildren().clear();
         resultsGrid.getRowConstraints().clear();
@@ -148,9 +148,12 @@ public class AppController {
             totalFN += values[3];
         }
         double accuracy = (double) (totalTP) / testingSetSize;
-        double recall = (totalTP + totalFN) == 0 ? 0 : (double) totalTP / (totalTP + totalFN);
+        double recall = (totalTP + totalFN) == 0 ? 0 : (double) totalTP / (totalTP + totalFN); // średnia ważona dla wszystkich klas
         double precision = (totalTP + totalFP) == 0 ? 0 : (double) totalTP / (totalTP + totalFP);
         double f1 = (precision + recall) == 0 ? 0 : 2 * (precision * recall) / (precision + recall);
+
+        accuracyGrid.add(new Label("Global accuracy"), 0, 0);
+        accuracyGrid.add(new Label(String.format("%.2f", accuracy)), 1, 0);
 
 //        resultsGrid.add(new Label("Accuracy"), 1, 0);
         resultsGrid.add(new Label("Recall"), 1, 0);
