@@ -19,17 +19,18 @@ public class ChartDrawer extends JFrame {
         add(createChartPanel("Precision", createDataset(confusionMatrix, "Precision")));
         add(createChartPanel("Recall", createDataset(confusionMatrix, "Recall")));
         add(createChartPanel("F1 Score", createDataset(confusionMatrix, "F1")));
-        add(createChartPanel("Accuracy", createDataset(confusionMatrix, "Accuracy")));
+//        add(createChartPanel("Accuracy", createDataset(confusionMatrix, "Accuracy")));
 
         pack();
         setVisible(true);
     }
 
     private ChartPanel createChartPanel(String title, DefaultCategoryDataset dataset) {
+        String yAxisLabel = title.equals("F1 Score") ? "Score" : "%";
         JFreeChart barChart = ChartFactory.createBarChart(
                 title,
                 "Class",
-                "Score",
+                yAxisLabel,
                 dataset,
                 PlotOrientation.VERTICAL,
                 true, true, false);
@@ -49,9 +50,8 @@ public class ChartDrawer extends JFrame {
             int TN = entry.getValue()[2];
             int FN = entry.getValue()[3];
 
-            double accuracy = (double) (TP + TN) / (TP + FP + TN + FN);
-            double recall = (double) TP / (TP + FN);
-            double precision = (double) TP / (TP + FP);
+            double recall = (double) TP / (TP + FN) * 100;
+            double precision = (double) TP / (TP + FP) * 100;
             double f1 = 2 * (precision * recall) / (precision + recall);
 
             switch (metric) {
@@ -63,9 +63,6 @@ public class ChartDrawer extends JFrame {
                     break;
                 case "F1":
                     dataset.addValue(f1, entry.getKey(), metric);
-                    break;
-                case "Accuracy":
-                    dataset.addValue(accuracy, entry.getKey(), metric);
                     break;
             }
         }

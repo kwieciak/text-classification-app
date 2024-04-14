@@ -2,8 +2,11 @@ package org.example.project1.gui;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.example.project1.Knn;
@@ -31,6 +34,8 @@ public class AppController {
     public ListView extractorsList;
     @FXML
     public GridPane resultsGrid;
+    @FXML
+    public GridPane accuracyGrid;
     @FXML
     private Button startKnnButton;
     @FXML
@@ -108,6 +113,7 @@ public class AppController {
         }
         for (Article article : articles) {
             ArticleFeatures.extractFeatures(article, wordCounterBuffer, selectedExtractors);
+            System.out.println("Extracted features for article: " + article.getFeaturesVector());
         }
         ArticleFeatures.normalizeFeatures(articles);
         double trainingPercent = sliderTrainingPercent.getValue() / 100.0;
@@ -117,17 +123,18 @@ public class AppController {
         int trainingArticles = (int) (totalArticles * trainingPercent);
         List<Article> trainingSet = articles.subList(0, trainingArticles);
         List<Article> testingSet = articles.subList(trainingArticles, totalArticles);
+        int testingSetSize = testingSet.size();
         System.out.println("Starting Knn with k=" + k + ", metric=" + metric + ", trainingSet=" + trainingSet.size() + ", testingSet=" + testingSet.size() + ", extractors=" + extractors);
         Knn knn = new Knn(k, metric, trainingSet, testingSet);
 ////        Map<String, Map<String, Integer>> confusionMatrix = knn.calculateConfusionMatrix();
         Map<String, int[]> confusionMatrix = knn.calculateConfusionMatrix();
-        populateResultsGrid(resultsGrid, confusionMatrix);
+        populateResultsGrid(resultsGrid, accuracyGrid, confusionMatrix, testingSetSize);
 ////        displayResults(confusionMatrix);
 //        ClassificationStats.calculateGlobalStats(confusionMatrix);
 //        ClassificationStats.calculateClassStats(confusionMatrix);
     }
 
-    public void populateResultsGrid(GridPane resultsGrid, Map<String, int[]> confusionMatrix) {
+    public void populateResultsGrid(GridPane resultsGrid, GridPane accuracyGrid, Map<String, int[]> confusionMatrix, int testingSetSize) {
         // Clear the GridPane
         resultsGrid.getChildren().clear();
         resultsGrid.getRowConstraints().clear();
@@ -140,43 +147,48 @@ public class AppController {
             totalTN += values[2];
             totalFN += values[3];
         }
-        double accuracy = (totalTP + totalFP + totalTN + totalFN) == 0 ? 0 : (double) (totalTP + totalTN) / (totalTP + totalFP + totalTN + totalFN);
-        double recall = (totalTP + totalFN) == 0 ? 0 : (double) totalTP / (totalTP + totalFN);
+        double accuracy = (double) (totalTP) / testingSetSize;
+        double recall = (totalTP + totalFN) == 0 ? 0 : (double) totalTP / (totalTP + totalFN); // średnia ważona dla wszystkich klas
         double precision = (totalTP + totalFP) == 0 ? 0 : (double) totalTP / (totalTP + totalFP);
         double f1 = (precision + recall) == 0 ? 0 : 2 * (precision * recall) / (precision + recall);
 
-        resultsGrid.add(new Label("Accuracy"), 1, 0);
-        resultsGrid.add(new Label("Recall"), 2, 0);
-        resultsGrid.add(new Label("Precision"), 3, 0);
-        resultsGrid.add(new Label("F1 Score"), 4, 0);
+        accuracyGrid.add(new Label("Global accuracy"), 0, 0);
+        accuracyGrid.add(new Label(String.format("%.2f", accuracy)), 1, 0);
+
+//        resultsGrid.add(new Label("Accuracy"), 1, 0);
+        resultsGrid.add(new Label("Recall"), 1, 0);
+        resultsGrid.add(new Label("Precision"), 2, 0);
+        resultsGrid.add(new Label("F1 Score"), 3, 0);
 
         resultsGrid.add(new Label("global"), 0, 1);
-        resultsGrid.add(new Label(String.format("%.2f", accuracy)), 1, 1);
-        resultsGrid.add(new Label(String.format("%.2f", recall)), 2, 1);
-        resultsGrid.add(new Label(String.format("%.2f", precision)), 3, 1);
-        resultsGrid.add(new Label(String.format("%.2f", f1)), 4, 1);
+//        resultsGrid.add(new Label(String.format("%.2f", accuracy)), 1, 1);
+        resultsGrid.add(new Label(String.format("%.2f", recall)), 1, 1);
+        resultsGrid.add(new Label(String.format("%.2f", precision)), 2, 1);
+        resultsGrid.add(new Label(String.format("%.2f", f1)), 3, 1);
 
         // Calculate class stats and add them to the GridPane
-        int rowIndex = 4;
+        int rowIndex = 2;
         for (Map.Entry<String, int[]> entry : confusionMatrix.entrySet()) {
             int TP = entry.getValue()[0];
             int FP = entry.getValue()[1];
             int TN = entry.getValue()[2];
             int FN = entry.getValue()[3];
 
-            accuracy = (TP + FP) == 0 ? 0 : (double) (TP + TN) / (TP + FP + FN + TN);
+
+            //accuracy = (TP + FP) == 0 ? 0 : (double) (TP + TN) / (TP + FP + FN + TN);
             precision = (TP + FP) == 0 ? 0 : (double) TP / (TP + FP);
             recall = (TP + FN) == 0 ? 0 : (double) TP / (TP + FN);
             f1 = (precision + recall) == 0 ? 0 : 2 * (precision * recall) / (precision + recall);
 
             resultsGrid.add(new Label(entry.getKey()), 0, rowIndex);
-            resultsGrid.add(new Label(String.format("%.2f", accuracy)), 1, rowIndex);
-            resultsGrid.add(new Label(String.format("%.2f", precision)), 2, rowIndex);
-            resultsGrid.add(new Label(String.format("%.2f", recall)), 3, rowIndex);
-            resultsGrid.add(new Label(String.format("%.2f", f1)), 4, rowIndex);
+//            resultsGrid.add(new Label(String.format("%.2f", accuracy)), 1, rowIndex);
+            resultsGrid.add(new Label(String.format("%.2f", precision)), 1, rowIndex);
+            resultsGrid.add(new Label(String.format("%.2f", recall)), 2, rowIndex);
+            resultsGrid.add(new Label(String.format("%.2f", f1)), 3, rowIndex);
             rowIndex++;
         }
-        chartDrawer = new ChartDrawer("Confusion Matrix", "Confusion Matrix", confusionMatrix);
+
+        chartDrawer = new ChartDrawer("k-NN Classification", "Classification Statistics", confusionMatrix);
         chartDrawer.pack();
         chartDrawer.setVisible(true);;
     }

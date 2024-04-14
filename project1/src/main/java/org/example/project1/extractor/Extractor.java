@@ -12,19 +12,21 @@ import java.util.regex.Pattern;
 public interface Extractor<T> {
     T extract(Article article);
 
-    default String extractStringFeature(String text,  List<String> featureTerms) {
+    default String extractStringFeature(String text, Map<String, List<String>> featureTerms) {
         Map<String, Integer> featureCounter = new HashMap<>();
 
-        for (String featureTerm : featureTerms) {
-            Pattern pattern = Pattern.compile("\\b" + featureTerm + "\\b", Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(text);
-
-            int count = 0;
-            while (matcher.find()) {
-                count++;
+        for (String featureTerm : featureTerms.keySet()) {
+            for (String alias : featureTerms.get(featureTerm)) {
+                Pattern pattern = Pattern.compile("\\b" + Pattern.quote(alias.toLowerCase()) + "\\b");
+                Matcher matcher = pattern.matcher(text);
+                int count = 0;
+                while (matcher.find()) {
+                    count++;
+                }
+                if (count > 0) {
+                    featureCounter.put(alias, count);
+                }
             }
-
-            featureCounter.put(featureTerm, count);
         }
 
         return featureCounter
@@ -34,4 +36,7 @@ public interface Extractor<T> {
                 .map(Map.Entry::getKey)
                 .orElse(null);
     }
+
+
+
 }
