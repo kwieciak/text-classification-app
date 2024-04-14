@@ -14,7 +14,7 @@ import java.util.Map;
 public class ArticleFeatures {
     static ExtractorFactory extractorFactory = new ExtractorFactory();
 
-        public static void extractFeatures(Article article, WordCounterBuffer wordCounterBuffer, List<ExtractorType>chosenExtractors) {
+    public static void extractFeatures(Article article, WordCounterBuffer wordCounterBuffer, List<ExtractorType>chosenExtractors) {
         List<Object> featuresVector = article.getFeaturesVector();
         if (featuresVector == null) {
             featuresVector = new ArrayList<>();
@@ -31,33 +31,39 @@ public class ArticleFeatures {
         Map<String, Double> minValues = new HashMap<>();
         Map<String, Double> maxValues = new HashMap<>();
         for (Article article : articles) {
+            int i = 0;
             List<Object> featuresVector = article.getFeaturesVector();
-            if (featuresVector != null) {
-                for (int i = 5; i < featuresVector.size(); i++) {
+            for(Object v : featuresVector){
+                if(!(v instanceof String)){
                     String featureName = "Feature" + i;
-                    double value = ((Number) featuresVector.get(i)).doubleValue();
+                    double value = ((Number) v).doubleValue();
                     minValues.put(featureName, Math.min(minValues.getOrDefault(featureName, Double.MAX_VALUE), value));
                     maxValues.put(featureName, Math.max(maxValues.getOrDefault(featureName, Double.MIN_VALUE), value));
+                    i++;
                 }
             }
         }
 
         // Normalize numeric features in each article
         for (Article article : articles) {
+            int i=0;
             List<Object> featuresVector = article.getFeaturesVector();
             if (featuresVector != null) {
-                for (int i = 5; i < featuresVector.size(); i++) {
-                    String featureName = "Feature" + i;
-                    double value = ((Number) featuresVector.get(i)).doubleValue();
-                    double minValue = minValues.get(featureName);
-                    double maxValue = maxValues.get(featureName);
-                    double normalizedValue;
-                    if (minValue != maxValue) {
-                        normalizedValue = (value - minValue) / (maxValue - minValue);
-                    } else {
-                        normalizedValue = 0.0; // Set normalized value to 0
+                for(Object v : featuresVector){
+                    if(!(v instanceof String)){
+                        String featureName = "Feature" + i;
+                        double value = ((Number) v).doubleValue();
+                        double minValue = minValues.get(featureName);
+                        double maxValue = maxValues.get(featureName);
+                        double normalizedValue;
+                        if (minValue != maxValue) {
+                            normalizedValue = (value - minValue) / (maxValue - minValue);
+                        } else {
+                            normalizedValue = 0.0; // Set normalized value to 0
+                        }
+                        featuresVector.set(i, normalizedValue);
+                        i++;
                     }
-                    featuresVector.set(i, normalizedValue);
                 }
             }
         }
