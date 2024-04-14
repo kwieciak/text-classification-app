@@ -7,7 +7,7 @@ public class ExtractorFactory {
     public ExtractorFactory() {
     }
 
-    public static Extractor<?> createExtractor(ExtractorType extractorType, WordCounterBuffer wordCounterBuffer){
+    public static Extractor<?> createExtractor(ExtractorType extractorType, WordCounterBuffer wordCounterBuffer) {
         switch (extractorType) {
             case MOST_USED_CURRENCY -> {
                 return new MostUsedCurrencyExtractor(wordCounterBuffer);

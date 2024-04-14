@@ -1,7 +1,6 @@
 package org.example.project1.extractor;
 
 import org.example.project1.article.Article;
-import org.example.project1.util.CsvReader;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +35,6 @@ public interface Extractor<T> {
                 .map(Map.Entry::getKey)
                 .orElse(null);
     }
-
 
 
 }

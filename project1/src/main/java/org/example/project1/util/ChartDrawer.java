@@ -51,7 +51,7 @@ public class ChartDrawer extends JFrame {
 
             double recall = (double) TP / (TP + FN) * 100;
             double precision = (double) TP / (TP + FP) * 100;
-            double f1 = 2 * (precision * recall) / (precision + recall) * 100;
+            double f1 = 2 * (precision * recall) / (precision + recall);
 
             switch (metric) {
                 case "Precision":

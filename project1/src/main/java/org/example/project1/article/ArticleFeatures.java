@@ -14,7 +14,7 @@ import java.util.Map;
 public class ArticleFeatures {
     static ExtractorFactory extractorFactory = new ExtractorFactory();
 
-    public static void extractFeatures(Article article, WordCounterBuffer wordCounterBuffer, List<ExtractorType>chosenExtractors) {
+    public static void extractFeatures(Article article, WordCounterBuffer wordCounterBuffer, List<ExtractorType> chosenExtractors) {
         List<Object> featuresVector = article.getFeaturesVector();
         if (featuresVector == null) {
             featuresVector = new ArrayList<>();
@@ -33,8 +33,8 @@ public class ArticleFeatures {
         for (Article article : articles) {
             int i = 0;
             List<Object> featuresVector = article.getFeaturesVector();
-            for(Object v : featuresVector){
-                if(v instanceof Double || v instanceof Integer){
+            for (Object v : featuresVector) {
+                if (v instanceof Double || v instanceof Integer) {
                     String featureName = "Feature" + i;
                     double value = ((Number) v).doubleValue();
                     minValues.put(featureName, Math.min(minValues.getOrDefault(featureName, Double.MAX_VALUE), value));
@@ -46,11 +46,11 @@ public class ArticleFeatures {
 
         // Normalize numeric features in each article
         for (Article article : articles) {
-            int i=0;
+            int i = 0;
             List<Object> featuresVector = article.getFeaturesVector();
             if (featuresVector != null) {
-                for(Object v : featuresVector){
-                    if(v instanceof Double || v instanceof Integer){
+                for (Object v : featuresVector) {
+                    if (v instanceof Double || v instanceof Integer) {
                         String featureName = "Feature" + i;
                         double value = ((Number) v).doubleValue();
                         double minValue = minValues.get(featureName);

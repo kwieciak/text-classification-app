@@ -8,9 +8,11 @@ import static org.example.project1.extractor.extractors.SumOfCommonWordsExtracto
 
 public class ProportionUniqueWordsToCommonWordsExtractor implements Extractor<Double> {
     private WordCounterBuffer wordCounterBuffer;
+
     public ProportionUniqueWordsToCommonWordsExtractor(WordCounterBuffer wordCounterBuffer) {
         this.wordCounterBuffer = wordCounterBuffer;
     }
+
     @Override
     public Double extract(Article article) {
         int commonWords = wordCounterBuffer.getCommonWords(article, THRESHOLD);

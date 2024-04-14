@@ -31,7 +31,7 @@ public class StageSetup {
         stage.show();
     }
 
-    public static void buildStage(Stage stage, String filePath)  {
+    public static void buildStage(Stage stage, String filePath) {
         setStage(stage);
         stage.setScene(new Scene(loadFxml("/org/example/project1/" + filePath)));
         stage.sizeToScene();

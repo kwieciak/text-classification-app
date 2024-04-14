@@ -55,7 +55,8 @@ public class ClassificationStats {
         }
         chartDrawer = new ChartDrawer("Confusion Matrix", "Confusion Matrix", confusionMatrix);
         chartDrawer.pack();
-        chartDrawer.setVisible(true);;
+        chartDrawer.setVisible(true);
+        ;
     }
 
 

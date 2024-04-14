@@ -2,27 +2,27 @@ package org.example.project1.gui;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.example.project1.Knn;
+import org.example.project1.article.Article;
+import org.example.project1.article.ArticleFeatures;
+import org.example.project1.article.ArticleReader;
 import org.example.project1.extractor.ExtractorType;
 import org.example.project1.extractor.WordCounterBuffer;
 import org.example.project1.measure.GeneralizedNgramMeasure;
 import org.example.project1.metric.Metric;
 import org.example.project1.metric.MetricType;
-import org.example.project1.article.Article;
-import org.example.project1.article.ArticleFeatures;
-import org.example.project1.article.ArticleReader;
 import org.example.project1.util.ChartDrawer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AppController {
     @FXML
@@ -49,7 +49,7 @@ public class AppController {
     private DirectoryChooser directoryChooser = new DirectoryChooser();
     private WordCounterBuffer wordCounterBuffer = new WordCounterBuffer();
     private FileChooser fileChooser = new FileChooser();
-    private  ChartDrawer chartDrawer;
+    private ChartDrawer chartDrawer;
 
     @FXML
     public void initialize() {
@@ -129,12 +129,14 @@ public class AppController {
     public void populateResultsGrid(GridPane resultsGrid, GridPane accuracyGrid, Map<String, int[]> confusionMatrix, int testingSetSize) {
         resultsGrid.getChildren().clear();
         resultsGrid.getRowConstraints().clear();
+        accuracyGrid.getChildren().clear();
+        accuracyGrid.getRowConstraints().clear();
 
         Map<String, double[]> classStats = calculateClassStats(confusionMatrix);
 
         int rowIndex = 1;
         int totalInstances = 0;
-        double totalRecall = 0, totalPrecision = 0;
+        double totalRecall = 0, totalPrecision = 0, totalAccuracy = 0;
         for (Map.Entry<String, double[]> entry : classStats.entrySet()) {
             String className = entry.getKey();
             double[] stats = entry.getValue();
@@ -142,10 +144,12 @@ public class AppController {
             double precision = stats[1];
             double f1 = stats[2];
             int instances = (int) stats[3];
+            double accuracy = stats[4];
 
             totalRecall += recall * instances;
             totalPrecision += precision * instances;
             totalInstances += instances;
+            totalAccuracy += accuracy * instances;
 
             resultsGrid.add(new Label(className), 0, rowIndex);
             resultsGrid.add(new Label(String.format("%.2f", recall)), 1, rowIndex);
@@ -154,12 +158,13 @@ public class AppController {
             rowIndex++;
         }
 
+        double globalAccuracy = totalAccuracy / totalInstances;
         double globalRecall = totalRecall / totalInstances;
         double globalPrecision = totalPrecision / totalInstances;
         double globalF1 = 2 * (globalPrecision * globalRecall) / (globalPrecision + globalRecall);
 
         accuracyGrid.add(new Label("Global accuracy"), 0, 0);
-        accuracyGrid.add(new Label(String.format("%.2f", globalRecall)), 1, 0);
+        accuracyGrid.add(new Label(String.format("%.2f", globalAccuracy)), 1, 0);
 
         resultsGrid.add(new Label("Recall"), 1, 0);
         resultsGrid.add(new Label("Precision"), 2, 0);
@@ -170,9 +175,11 @@ public class AppController {
         resultsGrid.add(new Label(String.format("%.2f", globalPrecision)), 2, rowIndex);
         resultsGrid.add(new Label(String.format("%.2f", globalF1)), 3, rowIndex);
 
-        chartDrawer = new ChartDrawer("k-NN Classification", "Classification Statistics", confusionMatrix);
-        chartDrawer.pack();
-        chartDrawer.setVisible(true);;
+        //chartDrawer = new ChartDrawer("k-NN Classification", "Classification Statistics", confusionMatrix);
+        //chartDrawer.pack();
+        //chartDrawer.setVisible(true);
+        ;
+        System.out.println("KONIEC");
     }
 
     private Map<String, double[]> calculateClassStats(Map<String, int[]> confusionMatrix) {
@@ -183,12 +190,14 @@ public class AppController {
             int TN = entry.getValue()[2];
             int FN = entry.getValue()[3];
 
+
             double precision = (TP + FP) == 0 ? 0 : (double) TP / (TP + FP);
             double recall = (TP + FN) == 0 ? 0 : (double) TP / (TP + FN);
             double f1 = (precision + recall) == 0 ? 0 : 2 * (precision * recall) / (precision + recall);
             int instances = TP + FN;
+            double accuracy = (TP + TN == 0) ? 0 : (double) (TP + TN) / (TP + TN + FP + FN);
 
-            classStats.put(entry.getKey(), new double[]{recall, precision, f1, instances});
+            classStats.put(entry.getKey(), new double[]{recall, precision, f1, instances, accuracy});
         }
         return classStats;
     }

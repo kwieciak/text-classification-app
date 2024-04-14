@@ -1,6 +1,5 @@
 package org.example.project1.metric.metrics;
 
-import org.example.project1.measure.GeneralizedNgramMeasure;
 import org.example.project1.metric.Metric;
 
 import java.util.List;

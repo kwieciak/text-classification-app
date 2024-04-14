@@ -1,8 +1,8 @@
 package org.example.project1;
 
 import javafx.util.Pair;
-import org.example.project1.metric.Metric;
 import org.example.project1.article.Article;
+import org.example.project1.metric.Metric;
 
 import java.util.*;
 
@@ -40,47 +40,21 @@ public class Knn {
             int maxCount = Collections.max(classCounts.values());
             double minDistance = Double.POSITIVE_INFINITY;
             String classifiedClass = null;
-            for (Map.Entry<String, Integer> entry: classCounts.entrySet()) {
+            for (Map.Entry<String, Integer> entry : classCounts.entrySet()) {
                 String className = entry.getKey();
                 int count = entry.getValue();
                 double distance = classDistances.get(className);
-                if(count == maxCount && distance < minDistance) {
+                if (count == maxCount && distance < minDistance) {
                     minDistance = distance;
                     classifiedClass = className;
                 }
             }
-            if(classifiedClass != null) {
+            if (classifiedClass != null) {
                 classifiedArticles.add(classifiedClass);
             }
-
-
-
-//            for (String className : classCounts.keySet()) {
-//                if (classCounts.get(className) == maxCount) {
-//                    if(classDistances.get(className) < minDistance) {
-//                        minDistance = classDistances.get(className);
-//                    }
-//                }
-//            }
-//            for (String className : classCounts.keySet()) {
-//                if (classDistances.get(className) == minDistance) {
-//                    classifiedArticles.add(className);
-//                    break;
-//                }
-//            }
         }
         return new Pair<>(classifiedArticles, testingArticles);
     }
-
-//    public double calculateAccuracy(List<String> classifiedArticles, List<Article> actualArticles) {
-//        int correct = 0;
-//        for (int i = 0; i < classifiedArticles.size(); i++) {
-//            if (classifiedArticles.get(i).equals(actualArticles.get(i).getPlacesList().get(0))) {
-//                correct++;
-//            }
-//        }
-//        return (double) correct / classifiedArticles.size();
-//    }
 
     public Map<String, int[]> calculateConfusionMatrix() {
         Pair<List<String>, List<Article>> result = classifyArticles();
