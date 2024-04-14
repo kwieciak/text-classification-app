@@ -23,7 +23,7 @@ public class WordCounterBuffer {
     }
 
     public String getText(Article article) {
-        return textBuffer.computeIfAbsent(article, a -> a.getText().toLowerCase());
+        return textBuffer.computeIfAbsent(article, Article::getText);
     }
 
     public Integer getAllWords(Article article) {

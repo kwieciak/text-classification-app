@@ -26,11 +26,10 @@ public class ChartDrawer extends JFrame {
     }
 
     private ChartPanel createChartPanel(String title, DefaultCategoryDataset dataset) {
-        String yAxisLabel = title.equals("F1 Score") ? "Score" : "%";
         JFreeChart barChart = ChartFactory.createBarChart(
                 title,
                 "Class",
-                yAxisLabel,
+                "%",
                 dataset,
                 PlotOrientation.VERTICAL,
                 true, true, false);
@@ -52,7 +51,7 @@ public class ChartDrawer extends JFrame {
 
             double recall = (double) TP / (TP + FN) * 100;
             double precision = (double) TP / (TP + FP) * 100;
-            double f1 = 2 * (precision * recall) / (precision + recall);
+            double f1 = 2 * (precision * recall) / (precision + recall) * 100;
 
             switch (metric) {
                 case "Precision":
