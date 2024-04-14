@@ -161,9 +161,10 @@ public class AppController {
         for (Map.Entry<String, int[]> entry : confusionMatrix.entrySet()) {
             int TP = entry.getValue()[0];
             int FP = entry.getValue()[1];
+            int TN = entry.getValue()[2];
             int FN = entry.getValue()[3];
 
-            accuracy = (TP + FP) == 0 ? 0 : (double) (TP + FN) / (TP + FP + FN);
+            accuracy = (TP + FP) == 0 ? 0 : (double) (TP + TN) / (TP + FP + FN + TN);
             precision = (TP + FP) == 0 ? 0 : (double) TP / (TP + FP);
             recall = (TP + FN) == 0 ? 0 : (double) TP / (TP + FN);
             f1 = (precision + recall) == 0 ? 0 : 2 * (precision * recall) / (precision + recall);
