@@ -87,7 +87,7 @@ public class Knn {
         List<String> classifiedArticles = result.getKey();
         List<Article> actualArticles = result.getValue();
 
-        List<String> classes = Arrays.asList("west germany", "usa", "france", "uk", "canada", "japan");
+        List<String> classes = Arrays.asList("west-germany", "usa", "france", "uk", "canada", "japan");
         Map<String, int[]> confusionMatrix = new HashMap<>();
         for (String className : classes) {
             confusionMatrix.put(className, new int[4]);     // TP, FP, TN, FN

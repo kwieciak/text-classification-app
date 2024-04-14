@@ -8,12 +8,14 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.example.project1.Knn;
 import org.example.project1.extractor.ExtractorType;
+import org.example.project1.extractor.WordCounterBuffer;
 import org.example.project1.measure.GeneralizedNgramMeasure;
 import org.example.project1.metric.Metric;
 import org.example.project1.metric.MetricType;
 import org.example.project1.article.Article;
 import org.example.project1.article.ArticleFeatures;
 import org.example.project1.article.ArticleReader;
+import org.example.project1.util.ChartDrawer;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +45,9 @@ public class AppController {
     private List<File> selectedFiles = new ArrayList<>();
     private PopUpWindow popUpWindow = new PopUpWindow();
     private DirectoryChooser directoryChooser = new DirectoryChooser();
+    private WordCounterBuffer wordCounterBuffer = new WordCounterBuffer();
     private FileChooser fileChooser = new FileChooser();
+    private  ChartDrawer chartDrawer;
 
     @FXML
     public void initialize() {
@@ -98,12 +102,12 @@ public class AppController {
     @FXML
     public void pressedStartKnn() {
         ObservableList<ExtractorType> selectedExtractors = extractorsList.getSelectionModel().getSelectedItems();
-        if (metric == null || numOfNeighbors.getText().isEmpty() || sliderTrainingPercent.getValue() == 0) {
+        if (metric == null || numOfNeighbors.getText().isEmpty() || sliderTrainingPercent.getValue() == 0 || selectedExtractors.isEmpty()) {
             popUpWindow.showInfo("Please select a metric, measure, number of neighbors, features to extract and a percent of training articles before starting kNN.");
             return;
         }
         for (Article article : articles) {
-//            ArticleFeatures.extractFeatures(article);
+            ArticleFeatures.extractFeatures(article, wordCounterBuffer, selectedExtractors);
         }
         ArticleFeatures.normalizeFeatures(articles);
         double trainingPercent = sliderTrainingPercent.getValue() / 100.0;
@@ -136,17 +140,17 @@ public class AppController {
             totalTN += values[2];
             totalFN += values[3];
         }
-        double accuracy = (double) (totalTP + totalTN) / (totalTP + totalFP + totalTN + totalFN);
-        double recall = (double) totalTP / (totalTP + totalFN);
-        double precision = (double) totalTP / (totalTP + totalFP);
-        double f1 = 2 * (precision * recall) / (precision + recall);
+        double accuracy = (totalTP + totalFP + totalTN + totalFN) == 0 ? 0 : (double) (totalTP + totalTN) / (totalTP + totalFP + totalTN + totalFN);
+        double recall = (totalTP + totalFN) == 0 ? 0 : (double) totalTP / (totalTP + totalFN);
+        double precision = (totalTP + totalFP) == 0 ? 0 : (double) totalTP / (totalTP + totalFP);
+        double f1 = (precision + recall) == 0 ? 0 : 2 * (precision * recall) / (precision + recall);
 
         resultsGrid.add(new Label("Accuracy"), 1, 0);
         resultsGrid.add(new Label("Recall"), 2, 0);
         resultsGrid.add(new Label("Precision"), 3, 0);
         resultsGrid.add(new Label("F1 Score"), 4, 0);
 
-        resultsGrid.add(new Label("Global"), 0, 1);
+        resultsGrid.add(new Label("global"), 0, 1);
         resultsGrid.add(new Label(String.format("%.2f", accuracy)), 1, 1);
         resultsGrid.add(new Label(String.format("%.2f", recall)), 2, 1);
         resultsGrid.add(new Label(String.format("%.2f", precision)), 3, 1);
@@ -171,6 +175,9 @@ public class AppController {
             resultsGrid.add(new Label(String.format("%.2f", f1)), 4, rowIndex);
             rowIndex++;
         }
+        chartDrawer = new ChartDrawer("Confusion Matrix", "Confusion Matrix", confusionMatrix);
+        chartDrawer.pack();
+        chartDrawer.setVisible(true);;
     }
 
     @FXML
