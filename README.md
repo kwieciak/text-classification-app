@@ -8,17 +8,17 @@ This project is a text analysis tool with interactive graphical interface that r
 
 
 ## Features
-*Reads and processes articles from a specified directory
-*Uses various extractors to gather information from the articles
-*Normalizes the features extracted from the articles
-*Uses the k-nearest neighbors (kNN) algorithm for classification
-*Calculates and prints classification stats
-*GUI
+* Reads and processes articles from a specified directory
+* Uses various extractors to gather information from the articles
+* Normalizes the features extracted from the articles
+* Uses the k-nearest neighbors (kNN) algorithm for classification
+* Calculates and prints classification stats
+* GUI
 
 ### Built with
-*Java
-*JavaFX
-*Maven
+* Java
+* JavaFX
+* Maven
 
 ## Roadmap
 - [ ] Add more extractors
