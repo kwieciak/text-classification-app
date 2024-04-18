@@ -23,3 +23,16 @@ This project is a text analysis tool with interactive graphical interface that r
 ## Roadmap
 - [ ] Add more extractors
 - [ ] Add multithreading support for knn
+
+## Getting started
+Make sure you have all the dependencies needed installed (Java 21 & JavaFX).
+1. Clone the repository to your local machine: 
+```sh
+git clone https://github.com/kwieciak/text-classification-app.git
+```
+2. Open IDE and select "Open an existing project." Navigate to the cloned repository and select the "text-classification-app" directory.
+3. Select a path:
+```sh
+src/main/java/org/example/project1/Application.java
+```
+4. Run 'Application.java'
