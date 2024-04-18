@@ -152,9 +152,9 @@ public class AppController {
             totalAccuracy += accuracy * instances;
 
             resultsGrid.add(new Label(className), 0, rowIndex);
-            resultsGrid.add(new Label(String.format("%.2f", recall)), 1, rowIndex);
-            resultsGrid.add(new Label(String.format("%.2f", precision)), 2, rowIndex);
-            resultsGrid.add(new Label(String.format("%.2f", f1)), 3, rowIndex);
+            resultsGrid.add(new Label(String.format("%.4f", recall)), 1, rowIndex);
+            resultsGrid.add(new Label(String.format("%.4f", precision)), 2, rowIndex);
+            resultsGrid.add(new Label(String.format("%.4f", f1)), 3, rowIndex);
             rowIndex++;
         }
 
@@ -164,16 +164,16 @@ public class AppController {
         double globalF1 = 2 * (globalPrecision * globalRecall) / (globalPrecision + globalRecall);
 
         accuracyGrid.add(new Label("Global accuracy"), 0, 0);
-        accuracyGrid.add(new Label(String.format("%.2f", globalAccuracy)), 1, 0);
+        accuracyGrid.add(new Label(String.format("%.4f", globalAccuracy)), 1, 0);
 
         resultsGrid.add(new Label("Recall"), 1, 0);
         resultsGrid.add(new Label("Precision"), 2, 0);
         resultsGrid.add(new Label("F1 Score"), 3, 0);
 
         resultsGrid.add(new Label("global"), 0, rowIndex);
-        resultsGrid.add(new Label(String.format("%.2f", globalRecall)), 1, rowIndex);
-        resultsGrid.add(new Label(String.format("%.2f", globalPrecision)), 2, rowIndex);
-        resultsGrid.add(new Label(String.format("%.2f", globalF1)), 3, rowIndex);
+        resultsGrid.add(new Label(String.format("%.4f", globalRecall)), 1, rowIndex);
+        resultsGrid.add(new Label(String.format("%.4f", globalPrecision)), 2, rowIndex);
+        resultsGrid.add(new Label(String.format("%.4f", globalF1)), 3, rowIndex);
 
         //chartDrawer = new ChartDrawer("k-NN Classification", "Classification Statistics", confusionMatrix);
         //chartDrawer.pack();
